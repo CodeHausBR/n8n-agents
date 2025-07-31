@@ -1,0 +1,219 @@
+/* ========== COLOR DEFAULT - SELECT BÁSICO SEM ESTILOS ========== */
+select[color="default"] {
+    padding-bottom: 0.7rem !important;
+    padding-top: 0.7rem !important;
+    padding-right: 0.7rem !important;
+    line-height: 1rem !important;
+    cursor: pointer !important;
+}
+
+/* ========== COLOR PRIMARY - SELECT LARANJA VIBRANTE ========== */
+select[color="primary"] {
+    /* Dimensões */
+    cursor: pointer !important;
+    width: 100% !important;
+    min-width: 250px !important;
+    font-size: 0.875rem !important;
+    padding-bottom: 0.7rem !important;
+    padding-top: 0.7rem !important;
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+    line-height: 1rem !important;
+
+    /* Tipografia */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+    font-weight: 400 !important;
+
+    /* Transições */
+    transition: all 0.2s ease !important;
+
+    /* Aparência */
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    cursor: pointer !important;
+
+    /* Bordas */
+    border-radius: 0.7rem !important;
+    border: 1px solid !important;
+    outline: none !important;
+
+    /* Cores */
+    background-color: #ffffff !important;
+    color: #9a3412 !important;
+    border-color: #f97316 !important;
+
+    /* Ícone dropdown */
+    background-repeat: no-repeat !important;
+    background-position: right 0.5rem center !important;
+    background-size: 1.25rem !important;
+}
+
+select[color="primary"]:hover {
+    border-color: #ea580c !important;
+    background-color: #fff7ed !important;
+}
+
+select[color="primary"]:focus {
+    border-color: #dc2626 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+select[color="primary"]:disabled {
+    background-color: #fef3e2 !important;
+    color: #c2410c !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+    border-color: #fed7aa !important;
+}
+
+/* ========== COLOR STANDARD - SELECT LARANJA MÉDIO ========== */
+select[color="standard"] {
+    /* Dimensões */
+
+    width: 100% !important;
+    min-width: 250px !important;
+    font-size: 0.875rem !important;
+    padding-bottom: 0.7rem !important;
+    padding-top: 0.7rem !important;
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+    line-height: 1rem !important;
+
+    /* Tipografia */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+    font-weight: 400 !important;
+
+    /* Transições */
+    transition: all 0.2s ease !important;
+
+    /* Aparência */
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    cursor: pointer !important;
+
+    /* Bordas */
+    border-radius: 0.7rem !important;
+    border: 1px solid !important;
+    outline: none !important;
+
+    /* Cores */
+    background-color: #ffffff !important;
+    color: #9a3412 !important;
+    border-color: #fb923c !important;
+
+    /* Ícone dropdown */
+    background-repeat: no-repeat !important;
+    background-position: right 0.5rem center !important;
+    background-size: 1rem !important;
+}
+
+select[color="standard"]:hover {
+    border-color: #f97316 !important;
+    background-color: #fff7ed !important;
+}
+
+select[color="standard"]:focus {
+    border-color: #ea580c !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+select[color="standard"]:disabled {
+    background-color: #fef3e2 !important;
+    color: #c2410c !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+    border-color: #fed7aa !important;
+}
+
+/* ========== COLOR BASIC - SELECT PARA NAVEGAÇÃO/BUSCA ========== */
+select[color="basic"] {
+    /* Dimensões */
+    cursor: pointer !important;
+    width: 100%;
+    min-width: 250px;
+    font-size: 0.875rem;
+    padding-bottom: 0.7rem !important;
+    padding-top: 0.7rem !important;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    line-height: 1rem !important;
+
+    /* Tipografia */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-weight: 400;
+
+    /* Transições */
+    transition: all 0.2s ease;
+
+    /* Aparência */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+
+    /* Bordas */
+    border-radius: 0.5rem;
+    border: 1px solid;
+    outline: none;
+
+    /* Cores */
+    background-color: #f9fafb;
+    color: #6b7280;
+    border-color: #e5e7eb;
+
+    /* Ícone dropdown */
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.25rem;
+}
+
+select[color="basic"]:hover {
+    border-color: #fed7aa;
+    background-color: #fff7ed;
+    color: #c2410c;
+}
+
+select[color="basic"]:focus {
+    border-color: #fb923c;
+    background-color: #ffffff;
+    color: #9a3412;
+    box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+select[color="basic"]:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+    opacity: 0.6;
+    border-color: #e5e7eb;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 768px) {
+    select[color="primary"],
+    select[color="standard"],
+    select[color="basic"] {
+        font-size: 16px; /* Previne zoom no iOS */
+    }
+}
+
+/* ========== ANIMAÇÕES ========== */
+@keyframes selectPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(249, 115, 22, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(249, 115, 22, 0);
+    }
+}
+
+select.pulse {
+    animation: selectPulse 1.5s;
+}

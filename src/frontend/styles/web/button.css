@@ -1,0 +1,227 @@
+/* ========== ESTILOS PARA BUTTON COLOR DEFAULT - BOTÃO CRU SEM ESTILOS ========== */
+button[color="default"] {
+    cursor: pointer;
+}
+
+/* ========== ESTILOS PARA BUTTON COLOR PRIMARY - LARANJA VIBRANTE ========== */
+button[color="primary"] {
+    cursor: pointer !important;
+    padding: 0.625rem 1.25rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transform: translateZ(0) !important;
+
+    --bg-color: #f97316;
+    --text-color: #ffffff;
+    --hover-bg: #ea580c;
+    --active-bg: #dc2626;
+
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+}
+
+button[color="primary"]::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    transform: translate(-50%, -50%) !important;
+    transition: width 0.6s, height 0.6s !important;
+}
+
+button[color="primary"]:hover {
+    background-color: var(--hover-bg) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.15) !important;
+}
+
+button[color="primary"]:active {
+    background-color: var(--active-bg) !important;
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.15) !important;
+}
+
+button[color="primary"]:active::before {
+    width: 300px !important;
+    height: 300px !important;
+}
+
+button[color="primary"]:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+button[color="primary"]:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ========== ESTILOS PARA BUTTON COLOR STANDARD - LARANJA MÉDIO ========== */
+button[color="standard"] {
+    cursor: pointer !important;
+    padding: 0.625rem 1.25rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transform: translateZ(0) !important;
+
+    --bg-color: #fb923c;
+    --text-color: #ffffff;
+    --hover-bg: #f97316;
+    --active-bg: #ea580c;
+
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+}
+
+button[color="standard"]::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    transform: translate(-50%, -50%) !important;
+    transition: width 0.6s, height 0.6s !important;
+}
+
+button[color="standard"]:hover {
+    background-color: var(--hover-bg) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.15) !important;
+}
+
+button[color="standard"]:active {
+    background-color: var(--active-bg) !important;
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.15) !important;
+}
+
+button[color="standard"]:active::before {
+    width: 300px !important;
+    height: 300px !important;
+}
+
+button[color="standard"]:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+button[color="standard"]:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ========== ESTILOS PARA BUTTON COLOR BASIC - PARA MENUS DE NAVEGAÇÃO ========== */
+button[color="basic"] {
+    cursor: pointer;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 400;
+    font-size: 1rem;
+    border: none;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    transform: translateZ(0);
+    margin: 0 0.25rem;
+
+    --bg-color: transparent;
+    --text-color: #808080;
+    --hover-bg: #fff7ed;
+    --active-bg: #ffedd5;
+
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+button[color="basic"]::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button[color="basic"]:hover {
+    background-color: var(--hover-bg);
+    color: #c2410c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.15);
+}
+
+button[color="basic"]:active {
+    background-color: var(--active-bg);
+    color: #808080;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.15);
+}
+
+button[color="basic"]:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+button[color="basic"].active {
+    color: #ea580c;
+    font-weight: 500;
+    background-color: var(--hover-bg);
+}
+
+button[color="basic"]::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #ea580c;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+button[color="basic"]:hover::after,
+button[color="basic"].active::after {
+    width: calc(100% - 2rem);
+}
+
+button[color="basic"]:focus-visible {
+    outline: 2px solid #ea580c;
+    outline-offset: 2px;
+}
+
+button[color="basic"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+button[color="basic"]:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}

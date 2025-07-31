@@ -1,0 +1,98 @@
+@import "tailwindcss";
+/* COMPONENTES USADOS PARAS PAGINAS WEB */
+
+@import "./web/button.css" screen and (max-width: 12000px);
+@import "./web/select.css" screen and (max-width: 12000px);
+@import "./web/option.css" screen and (max-width: 12000px);
+@import "./web/input.css" screen and (max-width: 12000px);
+@import "./web/scroll.css" screen and (max-width: 12000px);
+
+/* COMPONENTES USADOS PARAS PAGINAS MOBILE */
+/* body {
+    overflow: hidden;
+} */
+:root {
+    /* Cores padrão - serão substituídas pelo ThemeProvider */
+    --color-primary-main: #f97316;
+    --color-primary-light: #ffedd5;
+    --color-primary-dark: #ea580c;
+
+    --color-secondary-main: #fb923c;
+    --color-secondary-light: #fff7ed;
+    --color-secondary-dark: #c2410c;
+
+    --color-success-main: #10b981;
+    --color-success-light: #f0fdf4;
+    --color-success-dark: #059669;
+
+    --color-error-main: #dc2626;
+    --color-error-light: #fef2f2;
+    --color-error-dark: #991b1b;
+
+    --color-warning-main: #d97706;
+    --color-warning-light: #fffbeb;
+    --color-warning-dark: #b45309;
+
+    --color-info-main: #0891b2;
+    --color-info-light: #ecfeff;
+    --color-info-dark: #0e7490;
+
+    --color-background-default: #e5e7eb;
+    --color-background-paper: #ffffff;
+
+    --color-text-primary: #1f2937;
+    --color-text-secondary: #4b5563;
+
+    /* Grey scale */
+    --color-grey-50: #f9fafb;
+    --color-grey-100: #f3f4f6;
+    --color-grey-200: #e5e7eb;
+    --color-grey-300: #d1d5db;
+    --color-grey-400: #9ca3af;
+    --color-grey-500: #6b7280;
+    --color-grey-600: #4b5563;
+    --color-grey-700: #374151;
+    --color-grey-800: #4b5563;
+    --color-grey-900: #223853;
+
+    /* Typography */
+    --font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
+
+    --h1-font-size: 2.25rem;
+    --h1-font-weight: 700;
+    --h1-line-height: 2.75rem;
+
+    --h2-font-size: 1.875rem;
+    --h2-font-weight: 700;
+    --h2-line-height: 2.25rem;
+
+    --h3-font-size: 1.5rem;
+    --h3-font-weight: 600;
+    --h3-line-height: 1.75rem;
+
+    --body1-font-size: 0.875rem;
+    --body1-font-weight: 400;
+    --body1-line-height: 1.334rem;
+
+    --body2-font-size: 0.75rem;
+    --body2-font-weight: 400;
+    --body2-line-height: 1rem;
+
+    /* Shape */
+    --border-radius: 8px;
+}
+
+@keyframes slide-in-right {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animate-slide-in-right {
+    animation: slide-in-right 0.3s ease-out;
+}

@@ -1,0 +1,39 @@
+name = "service-financeiro"
+main = "build/backend/server.js"
+compatibility_date = "2025-03-25"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+
+
+
+routes = [
+  { pattern = "api-financeiro.codehaus.app", custom_domain = true },
+  { pattern = "app-financeiro.codehaus.app", custom_domain = true }
+]
+
+[assets]
+directory = "build/frontend"
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+not_found_handling = "single-page-application"
+
+[vars]
+ENVIRONMENT = "producao"
+API_URL = "https://api.codehaus.app"
+PUBLIC_SET_ENV = "SANDBOX"
+PUBLIC_NODE_ENV = "desenvolvimento"
+NODE_ENV = "producao"
+
+[env.sandbox]
+name = "service-usuario-sandbox"
+routes = [
+  { pattern = "api-sandbox-financeiro.codehaus.app", custom_domain = true },
+  { pattern = "app-sandbox-financeiro.codehaus.app", custom_domain = true }
+]
+
+[env.sandbox.vars]
+ENVIRONMENT = "sandbox"
+API_URL = "https://api-sandbox.codehaus.app"
+PUBLIC_SET_ENV = "SANDBOX"
+PUBLIC_NODE_ENV = "desenvolvimento"
+NODE_ENV = "sandbox"

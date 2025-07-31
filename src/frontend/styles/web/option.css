@@ -1,0 +1,185 @@
+/* ========== LIMITAÇÕES DOS NAVEGADORES ========== */
+/* 
+IMPORTANTE: Os navegadores têm limitações severas para estilizar <option>
+Apenas algumas propriedades funcionam de forma consistente:
+- color
+- background-color (limitado)
+- font-family, font-size, font-weight
+- padding (muito limitado)
+
+As propriedades que NÃO funcionam na maioria dos navegadores:
+- border, border-radius
+- box-shadow
+- margin
+- width, height
+- transition, transform
+- hover (inconsistente)
+*/
+
+/* ========== COLOR DEFAULT - OPTION BÁSICO ========== */
+select[color="default"] option {
+    color: inherit;
+    background-color: inherit;
+}
+
+/* ========== COLOR PRIMARY - OPTION LARANJA VIBRANTE ========== */
+select[color="primary"] option {
+    color: #9a3412;
+    background-color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+select[color="primary"] option:checked,
+select[color="primary"] option[selected] {
+    background-color: #f97316;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+select[color="primary"] option:disabled {
+    color: #fed7aa;
+    background-color: #fef3e2;
+}
+
+/* Placeholder option */
+select[color="primary"] option[value=""] {
+    color: #fb923c;
+    font-style: italic;
+}
+
+/* ========== COLOR STANDARD - OPTION LARANJA MÉDIO ========== */
+select[color="standard"] option {
+    color: #9a3412;
+    background-color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+select[color="standard"] option:checked,
+select[color="standard"] option[selected] {
+    background-color: #fb923c;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+select[color="standard"] option:disabled {
+    color: #fed7aa;
+    background-color: #fef3e2;
+}
+
+/* Placeholder option */
+select[color="standard"] option[value=""] {
+    color: #fb923c;
+    font-style: italic;
+}
+
+/* ========== COLOR BASIC - OPTION NEUTRO ========== */
+select[color="basic"] option {
+    color: #6b7280;
+    background-color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+select[color="basic"] option:checked,
+select[color="basic"] option[selected] {
+    background-color: #fb923c;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+select[color="basic"] option:disabled {
+    color: #d1d5db;
+    background-color: #f3f4f6;
+}
+
+/* Placeholder option */
+select[color="basic"] option[value=""] {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* ========== OPTGROUP (GRUPOS DE OPTIONS) ========== */
+select[color="primary"] optgroup {
+    color: #dc2626;
+    background-color: #fef2f2;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+select[color="standard"] optgroup {
+    color: #ea580c;
+    background-color: #fff7ed;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+select[color="basic"] optgroup {
+    color: #374151;
+    background-color: #f9fafb;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 768px) {
+    select[color="primary"] option,
+    select[color="standard"] option,
+    select[color="basic"] option {
+        font-size: 16px; /* Previne zoom no iOS */
+    }
+}
+
+/* ========== ALTERNATIVA: CUSTOM SELECT COM DIV ========== */
+/* 
+Se você precisar de mais controle visual, considere criar um select customizado
+usando div + JavaScript. Aqui está um exemplo da estrutura:
+
+.custom-select-primary {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.custom-select-primary .select-selected {
+    background-color: #ffffff;
+    color: #9a3412;
+    border: 1px solid #f97316;
+    border-radius: 0.7rem;
+    padding: 0.7rem 2.5rem 0.7rem 1rem;
+    cursor: pointer;
+}
+
+.custom-select-primary .select-items {
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid #f97316;
+    border-radius: 0.7rem;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-select-primary .select-items div {
+    color: #9a3412;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #fed7aa;
+}
+
+.custom-select-primary .select-items div:hover {
+    background-color: #fff7ed;
+    color: #ea580c;
+}
+
+.custom-select-primary .select-items div.selected {
+    background-color: #f97316;
+    color: #ffffff;
+}
+*/

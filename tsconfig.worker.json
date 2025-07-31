@@ -1,0 +1,46 @@
+// tsconfig.worker.json
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["ES2022"],
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        // "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": false,
+
+        //NOVAS REGRAS ADICIONADAS PARA O PROJETO FUNCIONAR
+        "noUnusedLocals": false, // Permite variáveis locais não utilizadas
+        "noUnusedParameters": false, // Permite parâmetros não utilizados
+        "noPropertyAccessFromIndexSignature": false, // Permite acesso a propriedades sem verificação de tipo
+        "noImplicitAny": false, // Permite tipos implícitos 'any'
+        "noImplicitReturns": false, // Permite retornos implícitos
+        "noImplicitThis": false, // Permite uso implícito de 'this'
+        "strictNullChecks": false, // Desativa verificações de null/undefined
+        "strictFunctionTypes": true, // Desativa verificações estritas de tipos de funções
+        "strictBindCallApply": false, // Desativa verificações estritas de bind/call/apply
+        "strictPropertyInitialization": false, // Desativa verificações de inicialização de propriedades
+
+        // Bundler mode
+        // "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": false,
+
+        // Desativa verificações de tipo e regras estritas
+        "noFallthroughCasesInSwitch": false, // Desativa verificação de fallthrough em switch
+
+        "outDir": "./build",
+        "rootDir": "./src",
+        "types": ["@cloudflare/workers-types"],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@types/*": ["./src/types/*"],
+            "types": ["./types"]
+        }
+    },
+    "include": ["src/backend/**/*", "src/types/**/*"],
+    "exclude": ["node_modules", "build"]
+}
