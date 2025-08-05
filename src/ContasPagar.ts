@@ -1,120 +1,261 @@
 typescript
-//BIBLIOTECAS
-//HELPER
-import helpers from "helpers/helpers";
-//TYPE
 import t from "onda-types";
-//MODELS
-import model_contasPagar from "mvc/models/model_contasPagar";
+import helpers from "helpers/helpers";
 
-const controller_contasPagar = class controller_contasPagar {
-    static async criar(c: t.Banco.Context) {
+const model_contas_pagar = class model_contas_pagar {
+    static async criar(data: t.Banco.Controllers.ContasPagar.Criar.Input, c: t.Banco.Context): Promise<t.Banco.Controllers.ContasPagar.Criar.Output> {
+        const sql = helpers.banco_dados.get_connection_neon(c.env);
+
+        await this.CREATE_TABLE_IF_NOT_EXISTS(c);
+
         try {
-            const dados_body: t.Banco.Controllers.ContasPagar.Criar.Input = await c.req.json();
+            const result: any = await sql
+                INSERT INTO contas_pagar (
+                    _id,
+                    descricao,
+                    tipo,
+                    valor,
+                    data,
+                    categoria,
+                    usuario_id,
+                    data_criacao
+                ) VALUES (
+                    uuid_generate_v4(),
+                    ${data?.data?.contasPagar?.descricao},
+                    ${data?.data?.contasPagar?.tipo},
+                    ${data?.data?.contasPagar?.valor},
+                    ${data?.data?.contasPagar?.data},
+                    ${data?.data?.contasPagar?.categoria},
+                    ${data?.data?.contasPagar?.usuario_id},
+                    CURRENT_TIMESTAMP
+                )
+                RETURNING _id, descricao, tipo, valor, data, categoria, usuario_id, data_criacao, data_atualizacao, usuario_criacao, usuario_atualizacao, excluido, usuario_exclusao, data_exclusao;
+            ;
 
-            const dados_validados = t.Banco.Controllers.ContasPagar.Criar.InputSchema.parse(dados_body)
-
-            const new_contaPagar = await model_contasPagar.criar(dados_validados, c);
-
-            const results = {
+            return {
                 data: {
-                    contasPagar: new_contaPagar.data.contasPagar
+                    contasPagar: result?.[0]
                 }
             }
-            return helpers.set_response.c.CREATED({ message: "Sucesso ao criar conta a pagar!", c: c, results: results });
-        } catch (erro) {
-            return helpers.set_response.c.SERVER_ERROR(erro, c);
+        } catch (error) {
+            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao criar contas a pagar!" });
         }
     }
 
-    static async buscar_pelo_id(c: t.Banco.Context) {
-        try {
-            const id = c.req.param("id");
+    static async buscar_pelo_filtro(filtros: t.Banco.Controllers.ContasPagar.BuscarPeloFiltro.Input, c: t.Banco.Context): Promise<t.Banco.Controllers.ContasPagar.BuscarPeloFiltro.Output> {
+        const sql = helpers.banco_dados.get_connection_neon(c.env);
 
-            const dados_validados = t.Banco.Controllers.ContasPagar.BuscarPeloId.InputSchema.parse({ data: { id: Number(id) } })
+        const conditionStrings: string[] = [];
+        const values: any[] = [];
 
-            const new_contaPagar = await model_contasPagar.buscar_pelo_id({ data: { id: dados_validados.data.id } }, c);
+        const s_filtros = filtros?.filtros?.contasPagar;
 
-            const results = {
-                data: {
-                    contasPagar: new_contaPagar.data.contasPagar
+        const paginaAtual = s_filtros?.pagina || 1;
+        const itensPorPagina = 30;
+        const offset = (paginaAtual - 1) * itensPorPagina;
+
+        if (s_filtros?.id) {
+            conditionStrings.push("cp._id = $" + (values.length + 1));
+            values.push(s_filtros?.id);
+        }
+
+        if (s_filtros?.descricao) {
+            conditionStrings.push("cp.descricao = $" + (values.length + 1));
+            values.push(s_filtros.descricao);
+        }
+
+        if (s_filtros?.tipo) {
+            conditionStrings.push("cp.tipo = $" + (values.length + 1));
+            values.push(s_filtros.tipo);
+        }
+
+        if (s_filtros?.valor) {
+            conditionStrings.push("cp.valor = $" + (values.length + 1));
+            values.push(s_filtros.valor);
+        }
+
+        if (s_filtros?.data) {
+            conditionStrings.push("cp.data = $" + (values.length + 1));
+            values.push(s_filtros.data);
+        }
+
+        if (s_filtros?.categoria) {
+            conditionStrings.push("cp.categoria = $" + (values.length + 1));
+            values.push(s_filtros.categoria);
+        }
+
+        if (s_filtros?.usuario_id) {
+            conditionStrings.push("cp.usuario_id = $" + (values.length + 1));
+            values.push(s_filtros.usuario_id);
+        }
+
+        const queryString = 
+            SELECT 
+                cp.*
+            FROM 
+                contas_pagar cp
+        ;
+
+        const totalItensParaPaginacaoQuery = 
+            SELECT 
+                COUNT(*)::INTEGER as total_itens,
+                CEIL(COUNT(*) / 30.0)::INTEGER as total_paginas
+            FROM contas_pagar cp
+        ;
+
+        let finalQuery = queryString;
+        let finalQueryPaginacao = totalItensParaPaginacaoQuery;
+
+        if (conditionStrings.length > 0) {
+            const whereClause = " WHERE " + conditionStrings.join(" AND ");
+            finalQuery += whereClause;
+            finalQueryPaginacao += whereClause;
+        }
+
+        finalQuery +=  LIMIT $${values.length + 1} OFFSET $${values.length + 2};
+        const valuesComPaginacao = [...values, itensPorPagina, offset];
+
+        const [get_contasPagar, [setPaginacao]]: any = await Promise.all([
+            sql.query(finalQuery, valuesComPaginacao),
+            sql.query(finalQueryPaginacao, values),
+        ]);
+
+        return {
+            data: {
+                contasPagar: get_contasPagar,
+                paginacao: {
+                    total_itens: setPaginacao?.total_itens,
+                    total_paginas: setPaginacao?.total_paginas,
+                    total_itens_pagina_atual: get_contasPagar?.length,
+                    itens_por_pagina: itensPorPagina
                 }
             }
-            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao buscar conta a pagar!", c: c, results: results });
-        } catch (erro) {
-            return helpers.set_response.c.SERVER_ERROR(erro, c);
         }
     }
 
-    static async buscar_pelo_filtro(c: t.Banco.Context) {
-        try {
-            const url = new URL(c.req.url);
-            const filtros: t.Banco.Controllers.ContasPagar.BuscarPeloFiltro.Input = {
-                filtros: {
-                    id: url.searchParams.get("id") ? Number(url.searchParams.get("id")) : undefined,
-                    descricao: url.searchParams.get("descricao"),
-                    tipo: url.searchParams.get("tipo") as any,
-                    valor: url.searchParams.get("valor") ? parseFloat(url.searchParams.get("valor")) : undefined,
-                    data: url.searchParams.get("data"),
-                    categoria: url.searchParams.get("categoria"),
-                    usuario_id: url.searchParams.get("usuario_id") ? Number(url.searchParams.get("usuario_id")) : undefined,
-                }
-            };
+    static async buscar_pelo_id(props: t.Banco.Controllers.ContasPagar.BuscarPeloId.Input, c: t.Banco.Context): Promise<t.Banco.Controllers.ContasPagar.BuscarPeloId.Output> {
+        const sql = helpers.banco_dados.get_connection_neon(c.env);
+        
+        const result: any = await sql
+            SELECT 
+                cp.*
+            FROM 
+                contas_pagar cp
+            WHERE cp._id = ${props.data.id}
+            AND cp.excluido IS FALSE
+        ;
 
-            const dados_validados = t.Banco.Controllers.ContasPagar.BuscarPeloFiltro.InputSchema.parse(filtros)
-
-            const get_contasPagar = await model_contasPagar.buscar_pelo_filtro(dados_validados, c);
-
-            const results = {
-                data: {
-                    paginacao: get_contasPagar.data.paginacao,
-                    contasPagar: get_contasPagar.data.contasPagar
-                }
+        return {
+            data: {
+                contasPagar: result[0]
             }
-            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao buscar contas a pagar!", c: c, results: results });
-        } catch (erro) {
-            return helpers.set_response.c.SERVER_ERROR(erro, c);
         }
     }
 
-    static async atualizar_pelo_id(c: t.Banco.Context) {
+    static async atualizar_pelo_id(data: t.Banco.Controllers.ContasPagar.AtualizarPeloId.Input, c: t.Banco.Context): Promise<t.Banco.Controllers.ContasPagar.AtualizarPeloId.Output> {
         try {
-            const id = c.req.param("id");
-            const dados_body: t.Banco.Controllers.ContasPagar.AtualizarPeloId.Input = await c.req.json();
+            const sql = helpers.banco_dados.get_connection_neon(c.env);
+            const updates = [];
+            const values = [];
 
-            const dados_validados = t.Banco.Controllers.ContasPagar.AtualizarPeloId.InputSchema.parse({ ...dados_body, data: { ...dados_body.data, id: Number(id) } })
+            const fields = data.data.contasPagar;
 
-            const new_contaPagar = await model_contasPagar.atualizar_pelo_id(dados_validados, c);
-
-            const results = {
-                data: {
-                    contasPagar: new_contaPagar.data.contasPagar
-                }
+            if (fields?.descricao !== undefined) {
+                updates.push(descricao = $${updates.length + 1});
+                values.push(fields?.descricao);
             }
-            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao atualizar conta a pagar!", c: c, results: results });
-        } catch (erro) {
-            return helpers.set_response.c.SERVER_ERROR(erro, c);
+
+            if (fields?.tipo !== undefined) {
+                updates.push(tipo = $${updates.length + 1});
+                values.push(fields?.tipo);
+            }
+
+            if (fields?.valor !== undefined) {
+                updates.push(valor = $${updates.length + 1});
+                values.push(fields?.valor);
+            }
+
+            if (fields?.data !== undefined) {
+                updates.push(data = $${updates.length + 1});
+                values.push(fields?.data);
+            }
+
+            if (fields?.categoria !== undefined) {
+                updates.push(categoria = $${updates.length + 1});
+                values.push(fields?.categoria);
+            }
+
+            if (fields?.usuario_id !== undefined) {
+                updates.push(usuario_id = $${updates.length + 1});
+                values.push(fields?.usuario_id);
+            }
+
+            updates.push(data_atualizacao = CURRENT_TIMESTAMP);
+
+            const setClause = updates.join(", ");
+
+            await sql.query(
+                
+                UPDATE contas_pagar SET ${setClause} 
+                WHERE _id = $${values.length + 1}
+                RETURNING *;
+            ,
+                [...values, data.data.contasPagar.id]
+            );
+
+            return await model_contas_pagar.buscar_pelo_id({ data: { id: data.data.contasPagar.id } }, c);
+        } catch (error) {
+            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao atualizar campos no model contas a pagar!" });
         }
     }
 
-    static async deletar_pelo_id(c: t.Banco.Context) {
-        try {
-            const id = c.req.param("id");
+    static async deletar_pelo_id(id: string, c: t.Banco.Context): Promise<t.Banco.Controllers.ContasPagar.DeletarPeloId.Output> {
+        const sql = helpers.banco_dados.get_connection_neon(c.env);
 
-            const dados_validados = t.Banco.Controllers.ContasPagar.DeletarPeloId.InputSchema.parse({ id: Number(id) })
+        const result = await sql
+            UPDATE contas_pagar 
+            SET 
+                excluido = TRUE,
+                data_exclusao = NOW()
+            WHERE _id = ${id}
+            AND excluido = FALSE
+            RETURNING *
+        ;
 
-            await model_contasPagar.deletar_pelo_id(dados_validados.id, c);
-
-            const results = {
-                data: {
-                    contasPagar: {}
-                }
+        return {
+            data: {
+                contasPagar: result[0]
             }
-            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao deletar conta a pagar!", c: c, results: results });
-        } catch (erro) {
-            return helpers.set_response.c.SERVER_ERROR(erro, c);
         }
+    }
+
+    static async CREATE_TABLE_IF_NOT_EXISTS(c: t.Banco.Context) {
+        const sql = helpers.banco_dados.get_connection_neon(c.env);
+
+        await sqlCREATE EXTENSION IF NOT EXISTS "uuid-ossp";;
+
+        await sql
+            CREATE TABLE IF NOT EXISTS contas_pagar (
+                -- colunas padrões
+                _id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                data_criacao TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                usuario_criacao TEXT,
+                data_atualizacao TIMESTAMP WITH TIME ZONE,
+                usuario_atualizacao TEXT,
+                excluido BOOLEAN DEFAULT FALSE NOT NULL,
+                usuario_exclusao TEXT,
+                data_exclusao TIMESTAMP WITH TIME ZONE,
+                aplicativo TEXT NOT NULL,
+                -- fim colunas padrões
+                descricao TEXT NOT NULL,
+                tipo TEXT NOT NULL CHECK (tipo IN ('receita', 'despesa')) NOT NULL,
+                valor NUMERIC NOT NULL,
+                data TEXT NOT NULL,
+                categoria TEXT NOT NULL,
+                usuario_id INTEGER NOT NULL
+            )
+        ;
     }
 };
 
-export default controller_contasPagar;
+export default model_contas_pagar;
