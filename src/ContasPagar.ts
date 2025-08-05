@@ -12,7 +12,7 @@ namespace ControllerContasPagar {
         descricao: z4.string(),
         tipo: z4.string(),
         valor: z4.number(),
-        data: z4.string().transform((arg) => new Date(arg)),
+        data: z4.string(),
         categoria: z4.string(),
         usuario_id: z4.number()
     });
@@ -25,7 +25,7 @@ namespace ControllerContasPagar {
                 descricao: z4.string(),
                 tipo: z4.string(),
                 valor: z4.number(),
-                data: z4.string().transform((arg) => new Date(arg)),
+                data: z4.string(),
                 categoria: z4.string(),
                 usuario_id: z4.number()
             })
@@ -35,7 +35,7 @@ namespace ControllerContasPagar {
         export const OutputSchema = ContasPagarBaseSchema;
         export type Output = {
             data: {
-                contaPagar: z4.infer<typeof OutputSchema>;
+                contasPagar: z4.infer<typeof OutputSchema>;
             }
         }
     }
@@ -49,7 +49,7 @@ namespace ControllerContasPagar {
                 valor: z4.number().optional(),
                 data: z4.string().optional(),
                 categoria: z4.string().optional(),
-                usuario_id: z4.number().optional()
+                usuario_id: z4.number().optional(),
             })
         });
 
@@ -80,7 +80,7 @@ namespace ControllerContasPagar {
         export const OutputSchema = ContasPagarBaseSchema;
         export type Output = {
             data: {
-                contaPagar: z4.infer<typeof OutputSchema>
+                contasPagar: z4.infer<typeof OutputSchema>
             }
         }
     }
@@ -88,12 +88,12 @@ namespace ControllerContasPagar {
     export namespace AtualizarPeloId {
         export const InputSchema = z4.object({
             data: z4.object({
-                contaPagar: z4.object({
+                contasPagar: z4.object({
                     id: z4.number(),
                     descricao: z4.string().optional(),
                     tipo: z4.string().optional(),
                     valor: z4.number().optional(),
-                    data: z4.string().optional().transform((arg) => new Date(arg)),
+                    data: z4.string().optional(),
                     categoria: z4.string().optional(),
                     usuario_id: z4.number().optional()
                 })
@@ -104,7 +104,7 @@ namespace ControllerContasPagar {
         export const OutputSchema = ContasPagarBaseSchema;
         export type Output = {
             data: {
-                contaPagar: z4.infer<typeof OutputSchema>
+                contasPagar: z4.infer<typeof OutputSchema>
             }
         }
     }
@@ -118,7 +118,7 @@ namespace ControllerContasPagar {
         export const OutputSchema = ContasPagarBaseSchema;
         export type Output = {
             data: {
-                contaPagar: {}
+                contasPagar: {}
             }
         }
     }
