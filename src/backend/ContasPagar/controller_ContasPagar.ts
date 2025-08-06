@@ -5,24 +5,23 @@ import helpers from "helpers/helpers";
 //TYPE
 import t from "onda-types";
 //MODELS
-import model_contas_pagar from "mvc/models/model_contas_pagar";
+import model_contasPagar from "mvc/models/model_contasPagar";
 
-
-const controller_contas_pagar = class controller_contas_pagar {
+const controller_contasPagar = class controller_contasPagar {
     static async criar(c: t.Banco.Context) {
         try {
             const dados_body: t.Banco.Controllers.ContasPagar.Criar.Input = await c.req.json();
 
             const dados_validados = t.Banco.Controllers.ContasPagar.Criar.InputSchema.parse(dados_body)
 
-            const new_contas_pagar = await model_contas_pagar.criar(dados_validados, c);
+            const new_contasPagar = await model_contasPagar.criar(dados_validados, c);
 
             const results = {
                 data: {
-                    contasPagar: new_contas_pagar.data.contasPagar
+                    contasPagar: new_contasPagar.data.contasPagar
                 }
             }
-            return helpers.set_response.c.CREATED({ message: "Sucesso ao criar contas a pagar!", c: c, results: results });
+            return helpers.set_response.c.CREATED({ message: "Sucesso ao criar conta a pagar!", c: c, results: results });
         } catch (erro) {
             return helpers.set_response.c.SERVER_ERROR(erro, c);
         }
@@ -32,16 +31,16 @@ const controller_contas_pagar = class controller_contas_pagar {
         try {
             const id = c.req.param("id");
 
-            const dados_validados = t.Banco.Controllers.ContasPagar.BuscarPeloId.InputSchema.parse({ data: { id: Number(id) } })
+            const dados_validados = t.Banco.Controllers.ContasPagar.BuscarPeloId.InputSchema.parse({ data: { id: id } })
 
-            const new_contas_pagar = await model_contas_pagar.buscar_pelo_id({ data: { id: dados_validados.data.id } }, c);
+            const new_contasPagar = await model_contasPagar.buscar_pelo_id({ data: { id: dados_validados.data.id } }, c);
 
             const results = {
                 data: {
-                    contasPagar: new_contas_pagar.data.contasPagar
+                    contasPagar: new_contasPagar.data.contasPagar
                 }
             }
-            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao buscar contas a pagar!", c: c, results: results });
+            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao buscar conta a pagar!", c: c, results: results });
         } catch (erro) {
             return helpers.set_response.c.SERVER_ERROR(erro, c);
         }
@@ -61,12 +60,12 @@ const controller_contas_pagar = class controller_contas_pagar {
 
             const dados_validados = t.Banco.Controllers.ContasPagar.BuscarPeloFiltro.InputSchema.parse(filtros)
 
-            const get_contas_pagar = await model_contas_pagar.buscar_pelo_filtro(dados_validados, c);
+            const get_contasPagar = await model_contasPagar.buscar_pelo_filtro(dados_validados, c);
 
             const results = {
                 data: {
-                    paginacao: get_contas_pagar.data.paginacao,
-                    contasPagar: get_contas_pagar.data.contasPagar
+                    paginacao: get_contasPagar.data.paginacao,
+                    contasPagar: get_contasPagar.data.contasPagar
                 }
             }
             return helpers.set_response.c.SUCCESS({ message: "Sucesso ao buscar contas a pagar!", c: c, results: results });
@@ -80,19 +79,16 @@ const controller_contas_pagar = class controller_contas_pagar {
             const id = c.req.param("id");
             const dados_body: t.Banco.Controllers.ContasPagar.AtualizarPeloId.Input = await c.req.json();
 
-            const dados_validados = t.Banco.Controllers.ContasPagar.AtualizarPeloId.InputSchema.parse({ 
-                ...dados_body, 
-                data: { contasPagar: { ...dados_body.data.contasPagar, id: Number(id) }} 
-            });
+            const dados_validados = t.Banco.Controllers.ContasPagar.AtualizarPeloId.InputSchema.parse({ ...dados_body, data: {contasPagar: {...dados_body.data.contasPagar,id: id }} })
 
-            const new_contas_pagar = await model_contas_pagar.atualizar_pelo_id(dados_validados, c);
+            const new_contasPagar = await model_contasPagar.atualizar_pelo_id(dados_validados, c);
 
             const results = {
                 data: {
-                    contasPagar: new_contas_pagar.data.contasPagar
+                    contasPagar: new_contasPagar.data.contasPagar
                 }
             }
-            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao atualizar contas a pagar!", c: c, results: results });
+            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao atualizar conta a pagar!", c: c, results: results });
         } catch (erro) {
             return helpers.set_response.c.SERVER_ERROR(erro, c);
         }
@@ -102,20 +98,20 @@ const controller_contas_pagar = class controller_contas_pagar {
         try {
             const id = c.req.param("id");
 
-            const dados_validados = t.Banco.Controllers.ContasPagar.DeletarPeloId.InputSchema.parse({ id: Number(id) })
+            const dados_validados = t.Banco.Controllers.ContasPagar.DeletarPeloId.InputSchema.parse({ id: id })
 
-            await model_contas_pagar.deletar_pelo_id(dados_validados.id, c);
+            await model_contasPagar.deletar_pelo_id(dados_validados.id, c);
 
             const results = {
                 data: {
                     contasPagar: {}
                 }
             }
-            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao deletar contas a pagar!", c: c, results: results });
+            return helpers.set_response.c.SUCCESS({ message: "Sucesso ao deletar conta a pagar!", c: c, results: results });
         } catch (erro) {
             return helpers.set_response.c.SERVER_ERROR(erro, c);
         }
     }
 };
 
-export default controller_contas_pagar;
+export default controller_contasPagar;
