@@ -55,37 +55,37 @@ const model_contas_pagar = class model_contas_pagar {
         const offset = (paginaAtual - 1) * itensPorPagina;
 
         if (s_filtros?.categoria) {
-            conditionStrings.push("c.categoria = $" + (values.length + 1));
+            conditionStrings.push("cp.categoria = $" + (values.length + 1));
             values.push(s_filtros.categoria);
         }
 
         if (s_filtros?.usuario_id) {
-            conditionStrings.push("c.usuario_id = $" + (values.length + 1));
+            conditionStrings.push("cp.usuario_id = $" + (values.length + 1));
             values.push(s_filtros.usuario_id);
         }
 
         if (s_filtros?.data) {
-            conditionStrings.push("c.data = $" + (values.length + 1));
+            conditionStrings.push("cp.data = $" + (values.length + 1));
             values.push(s_filtros.data);
         }
 
         if (s_filtros?.tipo) {
-            conditionStrings.push("c.tipo = $" + (values.length + 1));
+            conditionStrings.push("cp.tipo = $" + (values.length + 1));
             values.push(s_filtros.tipo);
         }
 
         const queryString = 
             SELECT 
-                c.*
+                cp.*
             FROM 
-                contas_pagar c
+                contas_pagar cp
         ;
 
         const totalItensParaPaginacaoQuery = 
             SELECT 
                 COUNT(*)::INTEGER as total_itens,
                 CEIL(COUNT(*) / 30.0)::INTEGER as total_paginas
-            FROM contas_pagar c
+            FROM contas_pagar cp
         ;
 
         let finalQuery = queryString;
@@ -122,11 +122,11 @@ const model_contas_pagar = class model_contas_pagar {
         const sql = helpers.banco_dados.get_connection_neon(c.env)
         const result: any = await sql
             SELECT 
-                c.*
+                cp.*
             FROM 
-                contas_pagar c
-            WHERE c.id = ${props.data.id}
-            AND c.excluido IS FALSE
+                contas_pagar cp
+            WHERE cp.id = ${props.data.id}
+            AND cp.excluido IS FALSE
         ;
 
         return {
@@ -145,38 +145,38 @@ const model_contas_pagar = class model_contas_pagar {
             const fields = data.data.contasPagar;
 
             if (fields?.descricao !== undefined) {
-                updates?.push(descricao = $${updates?.length + 1});
-                values.push(fields?.descricao);
+                updates.push(descricao = $${updates.length + 1});
+                values.push(fields.descricao);
             }
 
             if (fields?.tipo !== undefined) {
-                updates?.push(tipo = $${updates?.length + 1});
-                values.push(fields?.tipo);
+                updates.push(tipo = $${updates.length + 1});
+                values.push(fields.tipo);
             }
 
             if (fields?.valor !== undefined) {
-                updates?.push(valor = $${updates?.length + 1});
-                values.push(fields?.valor);
+                updates.push(valor = $${updates.length + 1});
+                values.push(fields.valor);
             }
 
             if (fields?.data !== undefined) {
-                updates?.push(data = $${updates?.length + 1});
-                values.push(fields?.data);
+                updates.push(data = $${updates.length + 1});
+                values.push(fields.data);
             }
 
             if (fields?.categoria !== undefined) {
-                updates?.push(categoria = $${updates?.length + 1});
-                values.push(fields?.categoria);
+                updates.push(categoria = $${updates.length + 1});
+                values.push(fields.categoria);
             }
 
             if (fields?.usuario_id !== undefined) {
-                updates?.push(usuario_id = $${updates?.length + 1});
-                values.push(fields?.usuario_id);
+                updates.push(usuario_id = $${updates.length + 1});
+                values.push(fields.usuario_id);
             }
 
-            updates?.push(data_atualizacao = CURRENT_TIMESTAMP);
+            updates.push(data_atualizacao = CURRENT_TIMESTAMP);
 
-            const setClause = updates?.join(", ");
+            const setClause = updates.join(", ");
 
             await sql.query(
                 
@@ -187,9 +187,9 @@ const model_contas_pagar = class model_contas_pagar {
                 [...values, data.data.contasPagar.id]
             );
 
-            return await model_contas_pagar.buscar_pelo_id({ data: { id: data.data.contasPagar.id } }, c)
+            return await model_contas_pagar.buscar_pelo_id({ data: { id: data.data.contasPagar.id } }, c);
         } catch (error) {
-            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao atualizar campos no model contas a pagar!" })
+            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao atualizar campos no model contas a pagar!" });
         }
     }
 
@@ -208,7 +208,7 @@ const model_contas_pagar = class model_contas_pagar {
 
         return {
             data: {
-                contasPagar: result[0]
+                contasPagar: {}
             }
         }
     }
@@ -234,7 +234,7 @@ const model_contas_pagar = class model_contas_pagar {
                 descricao TEXT NOT NULL,
                 tipo TEXT NOT NULL,
                 valor NUMERIC NOT NULL,
-                data DATE NOT NULL,
+                data TEXT NOT NULL,
                 categoria TEXT NOT NULL,
                 usuario_id INTEGER NOT NULL
             )
