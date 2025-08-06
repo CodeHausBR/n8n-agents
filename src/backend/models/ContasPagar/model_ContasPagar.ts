@@ -21,12 +21,12 @@ const model_contas_pagar = class model_contas_pagar {
                     data_criacao
                 ) VALUES (
                     uuid_generate_v4(),
-                    ${data?.data?.data?.descricao},
-                    ${data?.data?.data?.tipo},
-                    ${data?.data?.data?.valor},
-                    ${data?.data?.data?.data},
-                    ${data?.data?.data?.categoria},
-                    ${data?.data?.data?.usuario_id},
+                    ${data?.data?.contasPagar?.descricao},
+                    ${data?.data?.contasPagar?.tipo},
+                    ${data?.data?.contasPagar?.valor},
+                    ${data?.data?.contasPagar?.data},
+                    ${data?.data?.contasPagar?.categoria},
+                    ${data?.data?.contasPagar?.usuario_id},
                     CURRENT_TIMESTAMP
                 )
                 RETURNING _id, descricao, tipo, valor, data, categoria, usuario_id, data_criacao, data_atualizacao, usuario_criacao, usuario_atualizacao, excluido, usuario_exclusao, data_exclusao;
@@ -34,11 +34,11 @@ const model_contas_pagar = class model_contas_pagar {
 
             return {
                 data: {
-                    contaPagar: result?.[0]
+                    contasPagar: result?.[0]
                 }
             }
         } catch (error) {
-            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao criar conta a pagar!" });
+            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao criar contas a pagar!" });
         }
     }
 
@@ -54,38 +54,38 @@ const model_contas_pagar = class model_contas_pagar {
         const itensPorPagina = 30;
         const offset = (paginaAtual - 1) * itensPorPagina;
 
-        if (s_filtros?.descricao) {
-            conditionStrings.push("c.descricao = $" + (values.length + 1));
-            values.push(s_filtros.descricao);
-        }
-
-        if (s_filtros?.tipo) {
-            conditionStrings.push("c.tipo = $" + (values.length + 1));
-            values.push(s_filtros.tipo);
-        }
-
         if (s_filtros?.categoria) {
-            conditionStrings.push("c.categoria = $" + (values.length + 1));
+            conditionStrings.push("cp.categoria = $" + (values.length + 1));
             values.push(s_filtros.categoria);
         }
 
         if (s_filtros?.usuario_id) {
-            conditionStrings.push("c.usuario_id = $" + (values.length + 1));
+            conditionStrings.push("cp.usuario_id = $" + (values.length + 1));
             values.push(s_filtros.usuario_id);
+        }
+
+        if (s_filtros?.data) {
+            conditionStrings.push("cp.data = $" + (values.length + 1));
+            values.push(s_filtros.data);
+        }
+
+        if (s_filtros?.tipo) {
+            conditionStrings.push("cp.tipo = $" + (values.length + 1));
+            values.push(s_filtros.tipo);
         }
 
         const queryString = 
             SELECT 
-                c.*
+                cp.*
             FROM 
-                contas_pagar c
+                contas_pagar cp
         ;
 
         const totalItensParaPaginacaoQuery = 
             SELECT 
                 COUNT(*)::INTEGER as total_itens,
                 CEIL(COUNT(*) / 30.0)::INTEGER as total_paginas
-            FROM contas_pagar c
+            FROM contas_pagar cp
         ;
 
         let finalQuery = queryString;
@@ -107,13 +107,13 @@ const model_contas_pagar = class model_contas_pagar {
 
         return {
             data: {
+                contasPagar: get_contas_pagar,
                 paginacao: {
                     total_itens: setPaginacao?.total_itens,
                     total_paginas: setPaginacao?.total_paginas,
                     total_itens_pagina_atual: get_contas_pagar?.length,
                     itens_por_pagina: itensPorPagina
-                },
-                contasPagar: get_contas_pagar
+                }
             }
         }
     }
@@ -122,57 +122,56 @@ const model_contas_pagar = class model_contas_pagar {
         const sql = helpers.banco_dados.get_connection_neon(c.env)
         const result: any = await sql
             SELECT 
-                c.*
+                cp.*
             FROM 
-                contas_pagar c
-            WHERE c.id = ${props.data.id}
-            AND c.excluido IS FALSE
+                contas_pagar cp
+            WHERE cp.id = ${props.data.id}
+            AND cp.excluido IS FALSE
         ;
 
         return {
             data: {
-                contaPagar: result[0]
+                contasPagar: result[0]
             }
         }
     }
 
     static async atualizar_pelo_id(data: t.Banco.Controllers.ContasPagar.AtualizarPeloId.Input, c: t.Banco.Context): Promise<t.Banco.Controllers.ContasPagar.AtualizarPeloId.Output> {
-
         try {
-            const sql = helpers.banco_dados.get_connection_neon(c.env);
+            const sql = helpers.banco_dados.get_connection_neon(c.env)
             const updates = [];
             const values = [];
 
-            const fields = data.data.contaPagar;
+            const fields = data.data.contasPagar;
 
             if (fields?.descricao !== undefined) {
                 updates.push(descricao = $${updates.length + 1});
-                values.push(fields?.descricao);
+                values.push(fields.descricao);
             }
 
             if (fields?.tipo !== undefined) {
                 updates.push(tipo = $${updates.length + 1});
-                values.push(fields?.tipo);
+                values.push(fields.tipo);
             }
 
             if (fields?.valor !== undefined) {
                 updates.push(valor = $${updates.length + 1});
-                values.push(fields?.valor);
+                values.push(fields.valor);
             }
 
             if (fields?.data !== undefined) {
                 updates.push(data = $${updates.length + 1});
-                values.push(fields?.data);
+                values.push(fields.data);
             }
 
             if (fields?.categoria !== undefined) {
                 updates.push(categoria = $${updates.length + 1});
-                values.push(fields?.categoria);
+                values.push(fields.categoria);
             }
 
             if (fields?.usuario_id !== undefined) {
                 updates.push(usuario_id = $${updates.length + 1});
-                values.push(fields?.usuario_id);
+                values.push(fields.usuario_id);
             }
 
             updates.push(data_atualizacao = CURRENT_TIMESTAMP);
@@ -185,18 +184,17 @@ const model_contas_pagar = class model_contas_pagar {
                 WHERE id = $${values.length + 1}
                 RETURNING *;
             ,
-                [...values, data.data.contaPagar.id]
+                [...values, data.data.contasPagar.id]
             );
 
-            return await model_contas_pagar.buscar_pelo_id({ data: { id: data.data.contaPagar.id } }, c);
+            return await model_contas_pagar.buscar_pelo_id({ data: { id: data.data.contasPagar.id } }, c)
         } catch (error) {
-            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao atualizar campos na conta a pagar!" });
+            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao atualizar campos no model contas a pagar!" })
         }
-
     }
 
     static async deletar_pelo_id(id: number, c: t.Banco.Context): Promise<t.Banco.Controllers.ContasPagar.DeletarPeloId.Output> {
-        const sql = helpers.banco_dados.get_connection_neon(c.env);
+        const sql = helpers.banco_dados.get_connection_neon(c.env)
 
         const result = await sql
             UPDATE contas_pagar 
@@ -210,13 +208,13 @@ const model_contas_pagar = class model_contas_pagar {
 
         return {
             data: {
-                contaPagar: {}
+                contasPagar: {}
             }
-        };
+        }
     }
 
     static async CREATE_TABLE_IF_NOT_EXISTS(c: t.Banco.Context) {
-        const sql = helpers.banco_dados.get_connection_neon(c.env);
+        const sql = helpers.banco_dados.get_connection_neon(c.env)
 
         await sqlCREATE EXTENSION IF NOT EXISTS "uuid-ossp";;
 
@@ -233,15 +231,14 @@ const model_contas_pagar = class model_contas_pagar {
                 data_exclusao TIMESTAMP WITH TIME ZONE,
                 aplicativo TEXT NOT NULL,
                 -- fim colunas padrões
-                id SERIAL PRIMARY KEY,
                 descricao TEXT NOT NULL,
                 tipo TEXT NOT NULL,
-                valor NUMERIC(10,2) NOT NULL,
-                data DATE NOT NULL,
+                valor NUMERIC NOT NULL,
+                data TEXT NOT NULL,
                 categoria TEXT NOT NULL,
                 usuario_id INTEGER NOT NULL
             )
-        ;
+        
     }
 };
 
