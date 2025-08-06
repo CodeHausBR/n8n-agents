@@ -48,44 +48,44 @@ const model_contas_pagar = class model_contas_pagar {
         const conditionStrings: string[] = [];
         const values: any[] = [];
 
-        const s_filtros = filtros?.filtros;
+        const s_filtros = filtros?.filtros?.contasPagar;
 
         const paginaAtual = s_filtros?.pagina || 1;
         const itensPorPagina = 30;
         const offset = (paginaAtual - 1) * itensPorPagina;
 
         if (s_filtros?.categoria) {
-            conditionStrings.push("cp.categoria = $" + (values.length + 1));
+            conditionStrings.push("c.categoria = $" + (values.length + 1));
             values.push(s_filtros.categoria);
         }
 
         if (s_filtros?.usuario_id) {
-            conditionStrings.push("cp.usuario_id = $" + (values.length + 1));
+            conditionStrings.push("c.usuario_id = $" + (values.length + 1));
             values.push(s_filtros.usuario_id);
         }
 
         if (s_filtros?.data) {
-            conditionStrings.push("cp.data = $" + (values.length + 1));
+            conditionStrings.push("c.data = $" + (values.length + 1));
             values.push(s_filtros.data);
         }
 
         if (s_filtros?.tipo) {
-            conditionStrings.push("cp.tipo = $" + (values.length + 1));
+            conditionStrings.push("c.tipo = $" + (values.length + 1));
             values.push(s_filtros.tipo);
         }
 
         const queryString = 
             SELECT 
-                cp.*
+                c.*
             FROM 
-                contas_pagar cp
+                contas_pagar c
         ;
 
         const totalItensParaPaginacaoQuery = 
             SELECT 
                 COUNT(*)::INTEGER as total_itens,
                 CEIL(COUNT(*) / 30.0)::INTEGER as total_paginas
-            FROM contas_pagar cp
+            FROM contas_pagar c
         ;
 
         let finalQuery = queryString;
@@ -122,11 +122,11 @@ const model_contas_pagar = class model_contas_pagar {
         const sql = helpers.banco_dados.get_connection_neon(c.env)
         const result: any = await sql
             SELECT 
-                cp.*
+                c.*
             FROM 
-                contas_pagar cp
-            WHERE cp.id = ${props.data.id}
-            AND cp.excluido IS FALSE
+                contas_pagar c
+            WHERE c.id = ${props.data.id}
+            AND c.excluido IS FALSE
         ;
 
         return {
@@ -145,38 +145,38 @@ const model_contas_pagar = class model_contas_pagar {
             const fields = data.data.contasPagar;
 
             if (fields?.descricao !== undefined) {
-                updates.push(descricao = $${updates.length + 1});
-                values.push(fields.descricao);
+                updates?.push(descricao = $${updates?.length + 1});
+                values.push(fields?.descricao);
             }
 
             if (fields?.tipo !== undefined) {
-                updates.push(tipo = $${updates.length + 1});
-                values.push(fields.tipo);
+                updates?.push(tipo = $${updates?.length + 1});
+                values.push(fields?.tipo);
             }
 
             if (fields?.valor !== undefined) {
-                updates.push(valor = $${updates.length + 1});
-                values.push(fields.valor);
+                updates?.push(valor = $${updates?.length + 1});
+                values.push(fields?.valor);
             }
 
             if (fields?.data !== undefined) {
-                updates.push(data = $${updates.length + 1});
-                values.push(fields.data);
+                updates?.push(data = $${updates?.length + 1});
+                values.push(fields?.data);
             }
 
             if (fields?.categoria !== undefined) {
-                updates.push(categoria = $${updates.length + 1});
-                values.push(fields.categoria);
+                updates?.push(categoria = $${updates?.length + 1});
+                values.push(fields?.categoria);
             }
 
             if (fields?.usuario_id !== undefined) {
-                updates.push(usuario_id = $${updates.length + 1});
-                values.push(fields.usuario_id);
+                updates?.push(usuario_id = $${updates?.length + 1});
+                values.push(fields?.usuario_id);
             }
 
-            updates.push(data_atualizacao = CURRENT_TIMESTAMP);
+            updates?.push(data_atualizacao = CURRENT_TIMESTAMP);
 
-            const setClause = updates.join(", ");
+            const setClause = updates?.join(", ");
 
             await sql.query(
                 
@@ -208,7 +208,7 @@ const model_contas_pagar = class model_contas_pagar {
 
         return {
             data: {
-                contasPagar: {}
+                contasPagar: result[0]
             }
         }
     }
@@ -234,7 +234,7 @@ const model_contas_pagar = class model_contas_pagar {
                 descricao TEXT NOT NULL,
                 tipo TEXT NOT NULL,
                 valor NUMERIC NOT NULL,
-                data TEXT NOT NULL,
+                data DATE NOT NULL,
                 categoria TEXT NOT NULL,
                 usuario_id INTEGER NOT NULL
             )
