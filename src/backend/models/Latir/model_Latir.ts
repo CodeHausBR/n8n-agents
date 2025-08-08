@@ -23,14 +23,14 @@ const model_latir = class model_latir {
                     data_criacao
                 ) VALUES (
                     uuid_generate_v4(),
-                    ${data?.data?.latir?.descricao},
-                    ${data?.data?.latir?.tipo},
-                    ${data?.data?.latir?.valor},
-                    ${data?.data?.latir?.data},
-                    ${data?.data?.latir?.categoria},
-                    ${data?.data?.latir?.usuario_id},
-                    ${data?.data?.latir?.raca},
-                    ${data?.data?.latir?.idade},
+                    ${data?.data?.data?.descricao},
+                    ${data?.data?.data?.tipo},
+                    ${data?.data?.data?.valor},
+                    ${data?.data?.data?.data},
+                    ${data?.data?.data?.categoria},
+                    ${data?.data?.data?.usuario_id},
+                    ${data?.data?.data?.raca},
+                    ${data?.data?.data?.idade},
                     CURRENT_TIMESTAMP
                 )
                 RETURNING _id, descricao, tipo, valor, data, categoria, usuario_id, raca, idade, data_criacao, data_atualizacao, usuario_criacao, usuario_atualizacao, excluido, usuario_exclusao, data_exclusao;
@@ -60,7 +60,7 @@ const model_latir = class model_latir {
 
         if (s_filtros?.id) {
             conditionStrings.push("l._id = $" + (values.length + 1));
-            values.push(s_filtros?.id);
+            values.push(s_filtros.id);
         }
 
         if (s_filtros?.descricao) {
@@ -174,48 +174,48 @@ const model_latir = class model_latir {
             const fields = data.data.latir;
 
             if (fields?.descricao !== undefined) {
-                updates?.push(descricao = $${updates?.length + 1});
+                updates.push(descricao = $${updates.length + 1});
                 values.push(fields?.descricao);
             }
 
             if (fields?.tipo !== undefined) {
-                updates?.push(tipo = $${updates?.length + 1});
+                updates.push(tipo = $${updates.length + 1});
                 values.push(fields?.tipo);
             }
 
             if (fields?.valor !== undefined) {
-                updates?.push(valor = $${updates?.length + 1});
+                updates.push(valor = $${updates.length + 1});
                 values.push(fields?.valor);
             }
 
             if (fields?.data !== undefined) {
-                updates?.push(data = $${updates?.length + 1});
+                updates.push(data = $${updates.length + 1});
                 values.push(fields?.data);
             }
 
             if (fields?.categoria !== undefined) {
-                updates?.push(categoria = $${updates?.length + 1});
+                updates.push(categoria = $${updates.length + 1});
                 values.push(fields?.categoria);
             }
 
             if (fields?.usuario_id !== undefined) {
-                updates?.push(usuario_id = $${updates?.length + 1});
+                updates.push(usuario_id = $${updates.length + 1});
                 values.push(fields?.usuario_id);
             }
 
             if (fields?.raca !== undefined) {
-                updates?.push(raca = $${updates?.length + 1});
+                updates.push(raca = $${updates.length + 1});
                 values.push(fields?.raca);
             }
 
             if (fields?.idade !== undefined) {
-                updates?.push(idade = $${updates?.length + 1});
+                updates.push(idade = $${updates.length + 1});
                 values.push(fields?.idade);
             }
 
-            updates?.push(data_atualizacao = CURRENT_TIMESTAMP);
+            updates.push(data_atualizacao = CURRENT_TIMESTAMP);
 
-            const setClause = updates?.join(", ");
+            const setClause = updates.join(", ");
 
             await sql.query(
                 
@@ -247,7 +247,7 @@ const model_latir = class model_latir {
 
         return {
             data: {
-                latir: result[0]
+                latir: {}
             }
         }
     }
@@ -284,6 +284,3 @@ const model_latir = class model_latir {
 };
 
 export default model_latir;
- 
-
-Note que eu criei a tabela latir com as colunas necessárias de acordo com o padrão solicitado, além das colunas padrões que você especificou. Todos os métodos (criação, leitura, atualização e deleção) também foram adaptados para seguir o modelo proposto.
