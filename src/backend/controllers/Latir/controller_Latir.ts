@@ -13,7 +13,7 @@ const controller_latir = class controller_latir {
         try {
             const dados_body: t.Cachorro.Controllers.Latir.Criar.Input = await c.req.json();
 
-            const dados_validados = t.Cachorro.Controllers.Latir.Criar.InputSchema.parse(dados_body)
+            const dados_validados = t.Banco.Controllers.Latir.Criar.InputSchema.parse(dados_body)
 
             const new_latir = await model_latir.criar(dados_validados, c);
 
@@ -32,7 +32,7 @@ const controller_latir = class controller_latir {
         try {
             const id = c.req.param("id");
 
-            const dados_validados = t.Cachorro.Controllers.Latir.BuscarPeloId.InputSchema.parse({ data: { id: parseInt(id) } })
+            const dados_validados = t.Banco.Controllers.Latir.BuscarPeloId.InputSchema.parse({ data: { id: id } })
 
             const new_latir = await model_latir.buscar_pelo_id({ data: { id: dados_validados.data.id } }, c);
 
@@ -50,28 +50,30 @@ const controller_latir = class controller_latir {
     static async buscar_pelo_filtro(c: t.Banco.Context) {
         try {
             const url = new URL(c.req.url);
-            const filtros: t.Cachorro.Controllers.Latir.BuscarPeloFiltro.Input = {
+            const filtros: t.Banco.Controllers.Latir.BuscarPeloFiltro.Input = {
                 filtros: {
-                    id: url.searchParams.get("id") ? parseInt(url.searchParams.get("id")) : undefined,
-                    descricao: url.searchParams.get("descricao"),
-                    tipo: url.searchParams.get("tipo"),
-                    valor: url.searchParams.get("valor") ? parseFloat(url.searchParams.get("valor")) : undefined,
-                    data: url.searchParams.get("data"),
-                    categoria: url.searchParams.get("categoria"),
-                    usuario_id: url.searchParams.get("usuario_id") ? parseInt(url.searchParams.get("usuario_id")) : undefined,
-                    raca: url.searchParams.get("raca"),
-                    idade: url.searchParams.get("idade"),
+                    latir: {
+                        descricao: url.searchParams.get("descricao"),
+                        tipo: url.searchParams.get("tipo"),
+                        valor: url.searchParams.get("valor") ? parseFloat(url.searchParams.get("valor")) : undefined,
+                        data: url.searchParams.get("data"),
+                        categoria: url.searchParams.get("categoria"),
+                        usuario_id: url.searchParams.get("usuario_id") ? parseInt(url.searchParams.get("usuario_id")) : undefined,
+                        raca: url.searchParams.get("raca"),
+                        idade: url.searchParams.get("idade"),
+                        pagina: url.searchParams.get("pagina") ? parseInt(url.searchParams.get("pagina")) : undefined
+                    }
                 }
             };
 
-            const dados_validados = t.Cachorro.Controllers.Latir.BuscarPeloFiltro.InputSchema.parse(filtros)
+            const dados_validados = t.Banco.Controllers.Latir.BuscarPeloFiltro.InputSchema.parse(filtros)
 
             const get_latir = await model_latir.buscar_pelo_filtro(dados_validados, c);
 
             const results = {
                 data: {
-                    paginacao: get_latir.data.paginacao,
-                    latir: get_latir.data.latir
+                    latir: get_latir.data.latir,
+                    paginacao: get_latir.data.paginacao
                 }
             }
             return helpers.set_response.c.SUCCESS({ message: "Sucesso ao buscar latir!", c: c, results: results });
@@ -83,9 +85,9 @@ const controller_latir = class controller_latir {
     static async atualizar_pelo_id(c: t.Banco.Context) {
         try {
             const id = c.req.param("id");
-            const dados_body: t.Cachorro.Controllers.Latir.AtualizarPeloId.Input = await c.req.json();
+            const dados_body: t.Banco.Controllers.Latir.AtualizarPeloId.Input = await c.req.json();
 
-            const dados_validados = t.Cachorro.Controllers.Latir.AtualizarPeloId.InputSchema.parse({ ...dados_body, data: { latir: { ...dados_body.data.latir, id: parseInt(id) } } }})
+            const dados_validados = t.Banco.Controllers.Latir.AtualizarPeloId.InputSchema.parse({ ...dados_body, data: { latir: { ...dados_body.data.latir, id: id } } })
 
             const new_latir = await model_latir.atualizar_pelo_id(dados_validados, c);
 
@@ -104,8 +106,7 @@ const controller_latir = class controller_latir {
         try {
             const id = c.req.param("id");
 
-            const dados_validados = t.Cachorro.Controllers.Latir.DeletarPeloId.InputSchema.parse({ id: parseInt(id) })
-
+            const dados_validados = t.Banco.Controllers.Latir.DeletarPeloId.InputSchema.parse({ id: id })
 
             await model_latir.deletar_pelo_id(dados_validados.id, c);
 
