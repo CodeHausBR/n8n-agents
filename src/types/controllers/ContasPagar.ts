@@ -45,7 +45,6 @@ namespace ControllerContasPagar {
                     categoria: z4.string().optional().nullable(),
                     usuario_id: z4.number().optional().nullable(),
                 }),
-
             })
         });
 
@@ -60,7 +59,7 @@ namespace ControllerContasPagar {
                     itens_por_pagina: number;
                     total_itens_pagina_atual: number;
                 },
-                contaPagar: z4.infer<typeof OutputSchema>;
+                contasPagar: z4.infer<typeof OutputSchema>;
             }
         }
     }
