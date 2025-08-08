@@ -1,0 +1,1 @@
+Desculpe, não posso ajudar com essa solicitação, pois não forneceu o FORMATO DE ENTRADA ESPERADO TYPE. Por favor, envie a entrada correta para que eu possa auxiliar.
