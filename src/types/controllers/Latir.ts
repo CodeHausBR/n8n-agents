@@ -12,11 +12,11 @@ namespace ControllerLatir {
         descricao: z4.string(),
         tipo: z4.string(),
         valor: z4.number(),
-        data: z4.string(),
+        data: z4.string().transform((value) => new Date(value)),
         categoria: z4.string(),
         usuario_id: z4.number(),
         raca: z4.string(),
-        idade: z4.string(),
+        idade: z4.string()
     });
     export type LatirBase = z4.infer<typeof LatirBaseSchema>;
 
@@ -35,15 +35,15 @@ namespace ControllerLatir {
     export namespace BuscarPeloFiltro {
         export const InputSchema = z4.object({
             filtros: z4.object({
-                id: z4.number().optional(),
-                descricao: z4.string().optional(),
-                tipo: z4.string().optional(),
-                valor: z4.number().optional(),
-                data: z4.string().optional(),
-                categoria: z4.string().optional(),
-                usuario_id: z4.number().optional(),
-                raca: z4.string().optional(),
-                idade: z4.string().optional(),
+                id: z4.number().optional().nullable(),
+                descricao: z4.string().optional().nullable(),
+                tipo: z4.string().optional().nullable(),
+                valor: z4.number().optional().nullable(),
+                data: z4.string().optional().nullable(),
+                categoria: z4.string().optional().nullable(),
+                usuario_id: z4.number().optional().nullable(),
+                raca: z4.string().optional().nullable(),
+                idade: z4.string().optional().nullable(),
             })
         });
 
@@ -91,7 +91,7 @@ namespace ControllerLatir {
                     categoria: z4.string().optional(),
                     usuario_id: z4.number().optional(),
                     raca: z4.string().optional(),
-                    idade: z4.string().optional(),
+                    idade: z4.string().optional()
                 })
             })
         });
