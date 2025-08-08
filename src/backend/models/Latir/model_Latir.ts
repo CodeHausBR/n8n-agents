@@ -20,8 +20,7 @@ const model_latir = class model_latir {
                     usuario_id,
                     raca,
                     idade,
-                    data_criacao,
-                    aplicativo
+                    data_criacao
                 ) VALUES (
                     uuid_generate_v4(),
                     ${data?.data?.latir?.descricao},
@@ -32,8 +31,7 @@ const model_latir = class model_latir {
                     ${data?.data?.latir?.usuario_id},
                     ${data?.data?.latir?.raca},
                     ${data?.data?.latir?.idade},
-                    CURRENT_TIMESTAMP,
-                    'Financeiro'
+                    CURRENT_TIMESTAMP
                 )
                 RETURNING _id, descricao, tipo, valor, data, categoria, usuario_id, raca, idade, data_criacao, data_atualizacao, usuario_criacao, usuario_atualizacao, excluido, usuario_exclusao, data_exclusao;
             ;
@@ -54,15 +52,15 @@ const model_latir = class model_latir {
         const conditionStrings: string[] = [];
         const values: any[] = [];
 
-        const s_filtros = filtros?.filtros?.latir;
+        const s_filtros = filtros?.filtros;
 
         const paginaAtual = s_filtros?.pagina || 1;
         const itensPorPagina = 30;
         const offset = (paginaAtual - 1) * itensPorPagina;
 
-        if (s_filtros?.id !== undefined) {
-            conditionStrings.push("l.id = $" + (values.length + 1));
-            values.push(s_filtros.id);
+        if (s_filtros?.id) {
+            conditionStrings.push("l._id = $" + (values.length + 1));
+            values.push(s_filtros?.id);
         }
 
         if (s_filtros?.descricao) {
@@ -75,7 +73,7 @@ const model_latir = class model_latir {
             values.push(s_filtros.tipo);
         }
 
-        if (s_filtros?.valor !== undefined) {
+        if (s_filtros?.valor) {
             conditionStrings.push("l.valor = $" + (values.length + 1));
             values.push(s_filtros.valor);
         }
@@ -90,7 +88,7 @@ const model_latir = class model_latir {
             values.push(s_filtros.categoria);
         }
 
-        if (s_filtros?.usuario_id !== undefined) {
+        if (s_filtros?.usuario_id) {
             conditionStrings.push("l.usuario_id = $" + (values.length + 1));
             values.push(s_filtros.usuario_id);
         }
@@ -150,13 +148,13 @@ const model_latir = class model_latir {
     }
 
     static async buscar_pelo_id(props: t.Cachorro.Controllers.Latir.BuscarPeloId.Input, c: t.Banco.Context): Promise<t.Cachorro.Controllers.Latir.BuscarPeloId.Output> {
-        const sql = helpers.banco_dados.get_connection_neon(c.env);
+        const sql = helpers.banco_dados.get_connection_neon(c.env)
         const result: any = await sql
             SELECT 
                 l.*
             FROM 
                 latir l
-            WHERE l.id = ${props.data.id}
+            WHERE l._id = ${props.data.id}
             AND l.excluido IS FALSE
         ;
 
@@ -168,8 +166,9 @@ const model_latir = class model_latir {
     }
 
     static async atualizar_pelo_id(data: t.Cachorro.Controllers.Latir.AtualizarPeloId.Input, c: t.Banco.Context): Promise<t.Cachorro.Controllers.Latir.AtualizarPeloId.Output> {
+
         try {
-            const sql = helpers.banco_dados.get_connection_neon(c.env);
+            const sql = helpers.banco_dados.get_connection_neon(c.env)
             const updates = [];
             const values = [];
 
@@ -222,27 +221,28 @@ const model_latir = class model_latir {
             await sql.query(
                 
                 UPDATE latir SET ${setClause} 
-                WHERE id = $${values.length + 1}
+                WHERE _id = $${values.length + 1}
                 RETURNING *;
             ,
                 [...values, data.data.latir.id]
             );
 
-            return await model_latir.buscar_pelo_id({ data: { id: data.data.latir.id } }, c);
+            return await model_latir.buscar_pelo_id({ data: { id: data.data.latir.id } }, c)
         } catch (error) {
-            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao atualizar campos no model latir!" });
+            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao atualizar campos no model latir!" })
         }
+
     }
 
     static async deletar_pelo_id(id: number, c: t.Banco.Context): Promise<t.Cachorro.Controllers.Latir.DeletarPeloId.Output> {
-        const sql = helpers.banco_dados.get_connection_neon(c.env);
+        const sql = helpers.banco_dados.get_connection_neon(c.env)
 
         const result = await sql
             UPDATE latir 
             SET 
                 excluido = TRUE,
                 data_exclusao = NOW()
-            WHERE id = ${id}
+            WHERE _id = ${id}
             AND excluido = FALSE
             RETURNING *
         ;
@@ -255,7 +255,7 @@ const model_latir = class model_latir {
     }
 
     static async CREATE_TABLE_IF_NOT_EXISTS(c: t.Banco.Context) {
-        const sql = helpers.banco_dados.get_connection_neon(c.env);
+        const sql = helpers.banco_dados.get_connection_neon(c.env)
 
         await sqlCREATE EXTENSION IF NOT EXISTS "uuid-ossp";;
 
@@ -281,7 +281,7 @@ const model_latir = class model_latir {
                 raca TEXT NOT NULL,
                 idade TEXT NOT NULL
             )
-        ;
+        
     }
 };
 
