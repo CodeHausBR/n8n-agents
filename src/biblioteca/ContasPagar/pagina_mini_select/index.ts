@@ -1,6 +1,6 @@
-typescript
+javascript
 import React, { useEffect, useState } from "react";
-import { Search, Check, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { Search, DollarSign, ChevronsLeft, ChevronsRight, Check, X } from "lucide-react";
 
 import utils from "onda-utils";
 import t from "onda-types";
@@ -92,7 +92,7 @@ export const PaginaMiniSelectContasPagar: React.FC<MiniSelectContasPagarProps> =
                     <input
                         color="primary"
                         type="search"
-                        placeholder="Buscar conta a pagar pelo descrição..."
+                        placeholder="Buscar conta a pagar pela descrição..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onKeyUp={(e) => e.key === "Enter" && handleBuscar()}
@@ -123,23 +123,15 @@ export const PaginaMiniSelectContasPagar: React.FC<MiniSelectContasPagarProps> =
                             }}
                         >
                             <div className="flex items-center gap-3">
+                                <div className="flex-shrink-0">
+                                    <DollarSign className="w-10 h-10 text-[#f97316]" />
+                                </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-1">
                                         <h4 className="font-medium text-gray-900 truncate text-sm">{contaPagar.descricao}</h4>
                                         {get_pagina_contas_pagar?.item_selecionado?.id === contaPagar.id && <Check className="w-4 h-4 text-[#f97316] flex-shrink-0" />}
                                     </div>
-
-                                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
-                                        <div className="flex items-center gap-1">
-                                            <span className="font-mono">{Valor: R$ ${contaPagar.valor.toFixed(2)}}</span>
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            <span className="font-mono">{Data: ${contaPagar.data}}</span>
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            <span className="font-mono">{Categoria: ${contaPagar.categoria}}</span>
-                                        </div>
-                                    </div>
+                                    <div className="text-xs text-gray-500">Valor: R$ {contaPagar.valor.toFixed(2)}</div>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +139,7 @@ export const PaginaMiniSelectContasPagar: React.FC<MiniSelectContasPagarProps> =
 
                     {!get_pagina_contas_pagar?.loading && get_pagina_contas_pagar?.itens?.length === 0 && (
                         <div className="text-center py-8 text-gray-500">
-                            <span className="w-12 h-12 mx-auto mb-3 text-gray-300">⚠️</span>
+                            <X className="w-12 h-12 mx-auto mb-3 text-gray-300" />
                             <p className="text-sm">Nenhuma conta a pagar encontrada</p>
                             <p className="text-xs text-gray-400 mt-1">Tente ajustar sua busca</p>
                         </div>
@@ -165,7 +157,7 @@ export const PaginaMiniSelectContasPagar: React.FC<MiniSelectContasPagarProps> =
                                 <ChevronsLeft className="w-3 h-3" />
                             </button>
                             <button color="basic" onClick={() => irParaPagina(paginaAtual - 1)} disabled={paginaAtual === 1 || get_pagina_contas_pagar?.loading} title="Página anterior">
-                                <div className="w-3 h-3" />
+                                <X className="w-3 h-3" />
                             </button>
                             <div className="flex items-center space-x-1">{gerarBotoesPaginacao()}</div>
                             <button
@@ -174,7 +166,7 @@ export const PaginaMiniSelectContasPagar: React.FC<MiniSelectContasPagarProps> =
                                 disabled={paginaAtual === totalPaginas || get_pagina_contas_pagar?.loading}
                                 title="Próxima página"
                             >
-                                <div className="w-3 h-3" />
+                                <X className="w-3 h-3" />
                             </button>
                             <button
                                 color="basic"
