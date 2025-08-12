@@ -11,11 +11,7 @@ routes = [
   { pattern = "app-financeiro.codehaus.app", custom_domain = true }
 ]
 
-[assets]
-directory = "build/frontend"
-binding = "ASSETS"
-html_handling = "auto-trailing-slash"
-not_found_handling = "single-page-application"
+
 
 [vars]
 ENVIRONMENT = "producao"

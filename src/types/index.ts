@@ -8,12 +8,15 @@ import {Controller as ControllerCartaFianca} from "./controllers/order";
 import ControllerLog from "./controllers/log";
 import ControllerRecebedor from "./controllers/recebedor";
 import ControllerContasPagar from "./controllers/conta_pagar";
+import ControllerProfessor from './controllers/professor'
 
 // USAR ESSE PADRÃO DE IMPORTAÇÃO COM O NOME ESPLICITO:
 import ControllerHelpers from "./controllers/helpers";
 import ControllerContasReceber from "./controllers/conta_receber";
 import ControllerCliente from "./controllers/cliente";
-
+import ControllerAluno from './controllers/aluno'
+import ControllerSalaDeAula from './controllers/sala_de_aula'
+import ControllerEvento from './controllers/evento'
 //SERVICES
 import ServicesPagarme from "./services/pagarme";
 import ServiceAsaas from "./services/asaas";
@@ -45,6 +48,10 @@ namespace t {
         export import ContaPagar = ControllerContasPagar;
         //Cliente correto novo cadastro
         export import Cliente = ControllerCliente;
+        export import Aluno = ControllerAluno;
+        export import Professor = ControllerProfessor;
+        export import SalaDeAula = ControllerSalaDeAula;
+        export import Evento = ControllerEvento
     }
 
     export namespace Services {

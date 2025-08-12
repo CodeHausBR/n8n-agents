@@ -1,5 +1,5 @@
 import {Hono} from "hono";
-import controllerHelpers from "../../controllers/helpers/controllerHelpers";
+import controllerHelpers from "../../controllers/helpers/controller_helpers";
 import helpers from "../../helpers/helpers";
 
 const routeHelpers = new Hono();

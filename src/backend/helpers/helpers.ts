@@ -10,6 +10,7 @@ const helpers = class helpers {
     static token = token;
 
     static conn_neon = get_connection_neon;
+    static banco_dados: any;
 };
 
 export default helpers;

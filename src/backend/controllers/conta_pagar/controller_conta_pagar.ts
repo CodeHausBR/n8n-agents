@@ -5,7 +5,6 @@ import helpers from "../../helpers/helpers";
 import t from "../../../types";
 //MODELS
 import model_conta_pagar from "../../models/conta_pagar/model_conta_pagar";
-import services_asaas_api from "../../services/asaas/api/services_asaas_api";
 
 const controller_conta_pagar = class controller_conta_pagar {
     static async criar(c: t.Context) {
@@ -15,8 +14,6 @@ const controller_conta_pagar = class controller_conta_pagar {
             const dados_validados = t.Controllers.ContaPagar.Criar.InputSchema.parse(dados_body);
 
             const new_conta_pagar = await model_conta_pagar.criar(dados_validados, c);
-
-            // const pagar_pix_asaas = await services_asaas_api.transferencia.pagar_pix(new_conta_pagar, c);
 
             const results = {
                 data: {
@@ -59,28 +56,28 @@ const controller_conta_pagar = class controller_conta_pagar {
                 filtros: {
                     conta_pagar: {
                         pagina: parseInt(url.searchParams.get("pagina") || "1"),
-                        _id: url.searchParams.get("_id"),
-                        checkout: url.searchParams.get("checkout"),
-                        cliente_id: url.searchParams.get("cliente_id"),
-                        parcelas: parseInt(url.searchParams.get("parcelas") || ""),
-                        valor: parseFloat(url.searchParams.get("valor") || ""),
-                        vencimento: new Date(url.searchParams.get("vencimento") || ""),
-                        codigo: url.searchParams.get("codigo"),
-                        metodo_pagamento: url.searchParams.get("metodo_pagamento"),
-                        tipo_pagamento: parseInt(url.searchParams.get("tipo_pagamento") || ""),
-                        descricao: url.searchParams.get("descricao"),
-                        referencia_externa_primaria: url.searchParams.get("referencia_externa_primaria"),
-                        referencia_externa_secundaria: url.searchParams.get("referencia_externa_secundaria"),
-                        referencia_externa_terciaria: url.searchParams.get("referencia_externa_terciaria"),
-                        referencia_externa_quartenaria: url.searchParams.get("referencia_externa_quartenaria"),
-                        documento_titular: url.searchParams.get("documento_titular"),
-                        titular: url.searchParams.get("titular"),
-                        status: parseInt(url.searchParams.get("status") || ""),
-                        status_descricao: url.searchParams.get("status_descricao"),
-                        pagamento_id: url.searchParams.get("pagamento_id"),
-                        parcela: parseInt(url.searchParams.get("parcela") || ""),
-                        valor_pacela: parseFloat(url.searchParams.get("valor_pacela") || ""),
-                        usuario_create_id: url.searchParams.get("usuario_create_id"),
+                        _id: url.searchParams.get("_id") || undefined,
+                        checkout: url.searchParams.get("checkout") || undefined,
+                        cliente_id: url.searchParams.get("cliente_id") || undefined,
+                        parcelas: url.searchParams.get("parcelas") ? parseInt(url.searchParams.get("parcelas")!) : undefined,
+                        valor: url.searchParams.get("valor") ? parseFloat(url.searchParams.get("valor")!) : undefined,
+                        vencimento: url.searchParams.get("vencimento") || undefined,
+                        codigo: url.searchParams.get("codigo") || undefined,
+                        metodo_pagamento: url.searchParams.get("metodo_pagamento") || undefined,
+                        tipo_pagamento: url.searchParams.get("tipo_pagamento") ? parseInt(url.searchParams.get("tipo_pagamento")!) : undefined,
+                        descricao: url.searchParams.get("descricao") || undefined,
+                        referencia_externa_primaria: url.searchParams.get("referencia_externa_primaria") || undefined,
+                        referencia_externa_secundaria: url.searchParams.get("referencia_externa_secundaria") || undefined,
+                        referencia_externa_terciaria: url.searchParams.get("referencia_externa_terciaria") || undefined,
+                        referencia_externa_quartenaria: url.searchParams.get("referencia_externa_quartenaria") || undefined,
+                        documento_titular: url.searchParams.get("documento_titular") || undefined,
+                        titular: url.searchParams.get("titular") || undefined,
+                        status: url.searchParams.get("status") ? parseInt(url.searchParams.get("status")!) : undefined,
+                        status_descricao: url.searchParams.get("status_descricao") || undefined,
+                        pagamento_id: url.searchParams.get("pagamento_id") || undefined,
+                        parcela: url.searchParams.get("parcela") ? parseInt(url.searchParams.get("parcela")!) : undefined,
+                        valor_pacela: url.searchParams.get("valor_pacela") ? parseFloat(url.searchParams.get("valor_pacela")!) : undefined,
+                        usuario_create_id: url.searchParams.get("usuario_create_id") || undefined,
                     },
                 },
             };

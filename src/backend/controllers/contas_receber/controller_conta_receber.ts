@@ -80,33 +80,22 @@ const controller_conta_receber = class controller_conta_receber {
             const filtros: t.Controllers.ContaReceber.BuscarPeloFiltro.Input = {
                 filtros: {
                     conta_receber: {
-                        // Se "pagina" for null/vazio, usa "1" por padrão
                         pagina: parseInt(url.searchParams.get("pagina") || "1"),
-
-                        // Para campos que aceitam string ou undefined (se a API permitir opcional)
-                        _id: url.searchParams.get("_id") || undefined, // Se for null, vira undefined
+                        _id: url.searchParams.get("_id") || undefined, 
                         checkout: url.searchParams.get("checkout") || undefined,
                         cliente_id: url.searchParams.get("cliente_id") || undefined,
-
-                        // Para parcelas, valor, tipo_pagamento e status, trate NaN
                         parcelas: url.searchParams.get("parcelas") ? parseInt(url.searchParams.get("parcelas")!) : undefined,
                         valor: url.searchParams.get("valor") ? parseFloat(url.searchParams.get("valor")!) : undefined,
                         vencimento: url.searchParams.get("vencimento") || undefined,
                         codigo: url.searchParams.get("codigo") || undefined,
-
-                        // Onde estava o problema do JSON.parse:
                         metodo_pagamento: url.searchParams.get("metodo_pagamento") as t.Controllers.ContaReceber.MetodoPagamento,
-
                         tipo_pagamento: url.searchParams.get("tipo_pagamento") ? parseInt(url.searchParams.get("tipo_pagamento")!) : undefined,
                         descricao: url.searchParams.get("descricao") || undefined,
                         referencia_externa_primaria: url.searchParams.get("referencia_externa_primaria") || undefined,
                         referencia_externa_secundaria: url.searchParams.get("referencia_externa_secundaria") || undefined,
                         referencia_externa_terciaria: url.searchParams.get("referencia_externa_terciaria") || undefined,
                         referencia_externa_quartenaria: url.searchParams.get("referencia_externa_quartenaria") || undefined,
-
-                        // Ativo: tratamento para "true", "false" ou undefined
                         ativo: url.searchParams.get("ativo") === "true" ? true : url.searchParams.get("ativo") === "false" ? false : undefined,
-
                         documento_titular: url.searchParams.get("documento_titular") || undefined,
                         titular: url.searchParams.get("titular") || undefined,
                         status: url.searchParams.get("status") ? parseInt(url.searchParams.get("status")!) : undefined,
@@ -118,28 +107,24 @@ const controller_conta_receber = class controller_conta_receber {
                         url_pedido: url.searchParams.get("url_pedido") || undefined,
                         url_cobranca: url.searchParams.get("url_cobranca") || undefined,
                         usuario_create_id: url.searchParams.get("usuario_create_id") || undefined,
-                        // Excluido: tratamento para boolean
-                        excluido: url.searchParams.get("excluido") === "true", // Já que você quer false se não for "true"
+                        excluido: url.searchParams.get("excluido") === "true",
                     },
                 },
             };
-            console.log(filtros, "filtros");
 
             const dados_validados = t.Controllers.ContaReceber.BuscarPeloFiltro.InputSchema.parse(filtros);
-            console.log("1");
 
             const get_conta_receber = await model_conta_receber.buscar_pelo_filtro(dados_validados, c);
-            console.log("2");
+
             const results = {
                 data: {
                     conta_receber: get_conta_receber.data.conta_receber,
                     paginacao: get_conta_receber.data.paginacao,
                 },
             };
-            console.log("3");
+ 
             return helpers.set_response.c.SUCCESS({message: "Sucesso ao buscar conta_receber!", c: c, results: results});
         } catch (erro) {
-            console.log(erro, "erro");
 
             return helpers.set_response.c.SERVER_ERROR({error: erro, c: c});
         }

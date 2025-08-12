@@ -31,7 +31,7 @@ import route_recebedor from "./routes/route_recebedor/route_recebedor";
 import route_cliente from "./routes/route_cliente/route_cliente";
 import route_webhook from "./routes/route_webhook/route_webhook";
 import route_conta_pagar from "./routes/route_conta_pagar/route_conta_pagar";
-
+import route_professor from "./routes/route_professor/route_professor";
 const logsRoutes = new Hono().route("/", routeLogs);
 
 app.route("/financeiro", logsRoutes);
@@ -47,5 +47,7 @@ app.route("/financeiro", route_cliente);
 app.route("/financeiro", route_webhook);
 
 app.route("/financeiro", route_conta_pagar);
+
+app.route("/financeiro", route_professor);
 
 export default {fetch: app.fetch};

@@ -96,7 +96,7 @@ namespace ControllerContasPagar {
                     cliente_id: z4.string().optional().nullable(),
                     parcelas: z4.number().optional().nullable(),
                     valor: z4.number().optional().nullable(),
-                    vencimento: z4.date().optional().nullable(),
+                    vencimento: z4.string().optional().nullable(),
                     codigo: z4.string().optional().nullable(),
                     metodo_pagamento: z4.string().optional().nullable(),
                     tipo_pagamento: z4.number().optional().nullable(),
