@@ -136,7 +136,7 @@ export const PaginaMiniSelectLatir: React.FC<MiniSelectLatirProps> = ({ showActi
                     {!get_pagina_latir?.loading && get_pagina_latir?.itens?.length === 0 && (
                         <div className="text-center py-8 text-gray-500">
                             <User className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                            <p className="text-sm">Nenhuma latir encontrada</p>
+                            <p className="text-sm">Nenhum latir encontrado</p>
                             <p className="text-xs text-gray-400 mt-1">Tente ajustar sua busca</p>
                         </div>
                     )}
@@ -180,15 +180,15 @@ export const PaginaMiniSelectLatir: React.FC<MiniSelectLatirProps> = ({ showActi
                 {showActions && (
                     <div className="flex items-center justify-between text-xs text-gray-500">
                         <div className="text-xs text-gray-500">
-                            {totalItens} latir{totalItens !== 1 ? "s" : ""} encontrada{totalItens !== 1 ? "s" : ""}
+                            {totalItens} latir{totalItens !== 1 ? "s" : ""} encontrado{totalItens !== 1 ? "s" : ""}
                         </div>
                         {get_pagina_latir?.item_selecionado ? (
                             <span className="flex items-center gap-1">
                                 <Check className="w-3 h-3 text-green-500" />
-                                {get_pagina_latir?.item_selecionado?.descricao}
+                                {get_pagina_latir?.item_selecionado.descricao}
                             </span>
                         ) : (
-                            "Selecione uma latir acima"
+                            "Selecione um latir acima"
                         )}
                     </div>
                 )}
