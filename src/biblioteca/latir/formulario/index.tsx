@@ -48,7 +48,10 @@ export default function FormCriarLatir() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+
+        {/* Form Container */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8 space-y-6">
+
           {/* Descrição */}
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -61,7 +64,12 @@ export default function FormCriarLatir() {
                 <input
                   type="text"
                   {...field}
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${errors.data?.descricao ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"}}
+                  placeholder="Descrição do latir"
+                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
+                    errors.data?.descricao 
+                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
+                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  }}
                 />
               )}
             />
@@ -82,7 +90,12 @@ export default function FormCriarLatir() {
                 <input
                   type="text"
                   {...field}
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${errors.data?.tipo ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"}}
+                  placeholder="Tipo do latir"
+                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
+                    errors.data?.tipo 
+                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
+                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  }}
                 />
               )}
             />
@@ -103,7 +116,12 @@ export default function FormCriarLatir() {
                 <input
                   type="number"
                   {...field}
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${errors.data?.valor ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"}}
+                  placeholder="Valor do latir"
+                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
+                    errors.data?.valor 
+                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
+                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  }}
                 />
               )}
             />
@@ -124,8 +142,12 @@ export default function FormCriarLatir() {
                 <input
                   type="text"
                   {...field}
-                  placeholder="YYYY-MM-DD"
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${errors.data?.data ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"}}
+                  placeholder="Data do latir"
+                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
+                    errors.data?.data 
+                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
+                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  }}
                 />
               )}
             />
@@ -146,7 +168,12 @@ export default function FormCriarLatir() {
                 <input
                   type="text"
                   {...field}
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${errors.data?.categoria ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"}}
+                  placeholder="Categoria do latir"
+                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
+                    errors.data?.categoria 
+                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
+                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  }}
                 />
               )}
             />
@@ -167,7 +194,12 @@ export default function FormCriarLatir() {
                 <input
                   type="number"
                   {...field}
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${errors.data?.usuario_id ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"}}
+                  placeholder="ID do usuário"
+                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
+                    errors.data?.usuario_id 
+                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
+                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  }}
                 />
               )}
             />
@@ -188,7 +220,12 @@ export default function FormCriarLatir() {
                 <input
                   type="text"
                   {...field}
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${errors.data?.raca ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"}}
+                  placeholder="Raça do latir"
+                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
+                    errors.data?.raca 
+                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
+                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  }}
                 />
               )}
             />
@@ -209,7 +246,12 @@ export default function FormCriarLatir() {
                 <input
                   type="text"
                   {...field}
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${errors.data?.idade ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"}}
+                  placeholder="Idade do latir"
+                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
+                    errors.data?.idade 
+                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
+                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  }}
                 />
               )}
             />
@@ -222,7 +264,7 @@ export default function FormCriarLatir() {
           <button
             onClick={handleSubmit(onSubmit)}
             disabled={isPending}
-            className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-4 px-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:cursor-not-allowed disabled:transform-none disabled:hover:scale-100"
+            className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-4 px-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:cursor-not-allowed"
           >
             {isPending ? (
               <div className="flex items-center justify-center">
