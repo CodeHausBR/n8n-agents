@@ -1,0 +1,1 @@
+Não posso processar a entrada, pois você não forneceu o FORMATO DE ENTRADA ESPERADO TYPE. Por favor, forneça o formato correto para que eu possa gerar a página mini select conforme o PADRÃO DE SAÍDA ESPERADO.
