@@ -1,6 +1,6 @@
 typescript
 import React, { useEffect, useState } from "react";
-import { Search, Check, X } from "lucide-react";
+import { Search, Check, User } from "lucide-react";
 
 import utils from "onda-utils";
 import t from "onda-types";
@@ -10,7 +10,7 @@ interface MiniSelectLatirProps {
 }
 
 export const PaginaMiniSelectLatir: React.FC<MiniSelectLatirProps> = ({ showActions = true }) => {
-    const store_latir = new utils.controller<t.Cachorro.Controllers.Latir.TController>({ entidade: "latir" });
+    const store_latir = new utils.controller<t.Banco.Controllers.Latir.TController>({ entidade: "latir" });
     const [paginaAtual, setPaginaAtual] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -36,7 +36,7 @@ export const PaginaMiniSelectLatir: React.FC<MiniSelectLatirProps> = ({ showActi
         buscarDados(1, searchTerm);
     }
 
-    function handleSelectItem(latir: t.Cachorro.Controllers.Latir.LatirBase) {
+    function handleSelectItem(latir: t.Banco.Controllers.Latir.LatirBase) {
         store_latir.set_state((store) => {
             store.pagina_mini_select.item_selecionado = latir;
         });
@@ -124,8 +124,10 @@ export const PaginaMiniSelectLatir: React.FC<MiniSelectLatirProps> = ({ showActi
                         >
                             <div className="flex items-center gap-3">
                                 <div className="flex-1 min-w-0">
-                                    <h4 className="font-medium text-gray-900 truncate text-sm">{latir.descricao}</h4>
-                                    {get_pagina_latir?.item_selecionado?.id === latir.id && <Check className="w-4 h-4 text-[#f97316] flex-shrink-0" />}
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <h4 className="font-medium text-gray-900 truncate text-sm">{latir.descricao}</h4>
+                                        {get_pagina_latir?.item_selecionado?.id === latir.id && <Check className="w-4 h-4 text-[#f97316] flex-shrink-0" />}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +135,7 @@ export const PaginaMiniSelectLatir: React.FC<MiniSelectLatirProps> = ({ showActi
 
                     {!get_pagina_latir?.loading && get_pagina_latir?.itens?.length === 0 && (
                         <div className="text-center py-8 text-gray-500">
-                            <X className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                            <User className="w-12 h-12 mx-auto mb-3 text-gray-300" />
                             <p className="text-sm">Nenhum latir encontrado</p>
                             <p className="text-xs text-gray-400 mt-1">Tente ajustar sua busca</p>
                         </div>
@@ -148,16 +150,27 @@ export const PaginaMiniSelectLatir: React.FC<MiniSelectLatirProps> = ({ showActi
                     <div className="flex items-center justify-center mb-3">
                         <div className="flex items-center space-x-1">
                             <button color="basic" onClick={() => irParaPagina(1)} disabled={paginaAtual === 1 || get_pagina_latir?.loading} title="Primeira página">
-                                <X className="w-3 h-3" />
+                                <User className="w-3 h-3" />
+                            </button>
+                            <button color="basic" onClick={() => irParaPagina(paginaAtual - 1)} disabled={paginaAtual === 1 || get_pagina_latir?.loading} title="Página anterior">
+                                <User className="w-3 h-3" />
                             </button>
                             <div className="flex items-center space-x-1">{gerarBotoesPaginacao()}</div>
+                            <button
+                                color="basic"
+                                onClick={() => irParaPagina(paginaAtual + 1)}
+                                disabled={paginaAtual === totalPaginas || get_pagina_latir?.loading}
+                                title="Próxima página"
+                            >
+                                <User className="w-3 h-3" />
+                            </button>
                             <button
                                 color="basic"
                                 onClick={() => irParaPagina(totalPaginas)}
                                 disabled={paginaAtual === totalPaginas || get_pagina_latir?.loading}
                                 title="Última página"
                             >
-                                <X className="w-3 h-3" />
+                                <User className="w-3 h-3" />
                             </button>
                         </div>
                     </div>
