@@ -1,12 +1,14 @@
 typescript
-import t from "onda-types";
-import helpers from "helpers/helpers";
+import t from "../../../types";
+import helpers from "../../helpers/helpers";
 
 const model_latir = class model_latir {
-    static async criar(data: t.Cachorro.Controllers.Latir.Criar.Input, c: t.Banco.Context): Promise<t.Cachorro.Controllers.Latir.Criar.Output> {
-        const sql = helpers.banco_dados.get_connection_neon(c.env)
+    static async criar(data: t.Controllers.Latir.Criar.Input, c: t.Context): Promise<t.Controllers.Latir.Criar.Output> {
+        const sql = helpers.conn_neon.get_connection(c.env);
 
         await this.CREATE_TABLE_IF_NOT_EXISTS(c);
+
+        const user = c.get("usuario_auth");
 
         try {
             const result: any = await sql
@@ -20,7 +22,9 @@ const model_latir = class model_latir {
                     usuario_id,
                     raca,
                     idade,
-                    data_criacao
+                    data_criacao,
+                    aplicativo,
+                    usuario_criacao
                 ) VALUES (
                     uuid_generate_v4(),
                     ${data?.data?.latir?.descricao},
@@ -31,23 +35,25 @@ const model_latir = class model_latir {
                     ${data?.data?.latir?.usuario_id},
                     ${data?.data?.latir?.raca},
                     ${data?.data?.latir?.idade},
-                    CURRENT_TIMESTAMP
+                    CURRENT_TIMESTAMP,
+                    ${user.app},
+                    ${user._id.toString()}
                 )
-                RETURNING _id, descricao, tipo, valor, data, categoria, usuario_id, raca, idade, data_criacao, data_atualizacao, usuario_criacao, usuario_atualizacao, excluido, usuario_exclusao, data_exclusao;
+                RETURNING _id, descricao, tipo, valor, data, categoria, usuario_id, raca, idade, data_criacao, data_atualizacao, usuario_criacao, usuario_atualizacao, excluido, usuario_exclusao, data_exclusao ;
             ;
 
             return {
                 data: {
-                    latir: result?.[0]
-                }
-            }
+                    latir: result?.[0],
+                },
+            };
         } catch (error) {
-            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao criar latir!" });
+            return helpers.set_response.error.DATABASE_ERROR({message: "Erro ao criar latir!"}) as any;
         }
     }
 
-    static async buscar_pelo_filtro(filtros: t.Cachorro.Controllers.Latir.BuscarPeloFiltro.Input, c: t.Banco.Context): Promise<t.Cachorro.Controllers.Latir.BuscarPeloFiltro.Output> {
-        const sql = helpers.banco_dados.get_connection_neon(c.env)
+    static async buscar_pelo_filtro(filtros: t.Controllers.Latir.BuscarPeloFiltro.Input, c: t.Context): Promise<t.Controllers.Latir.BuscarPeloFiltro.Output> {
+        const sql = helpers.conn_neon.get_connection(c.env);
 
         const conditionStrings: string[] = [];
         const values: any[] = [];
@@ -58,9 +64,8 @@ const model_latir = class model_latir {
         const itensPorPagina = 30;
         const offset = (paginaAtual - 1) * itensPorPagina;
 
-
         if (s_filtros?.id) {
-            conditionStrings.push("l._id = $" + (values.length + 1));
+            conditionStrings.push("l.id = $" + (values.length + 1));
             values.push(s_filtros?.id);
         }
 
@@ -130,10 +135,7 @@ const model_latir = class model_latir {
         finalQuery +=  LIMIT $${values.length + 1} OFFSET $${values.length + 2};
         const valuesComPaginacao = [...values, itensPorPagina, offset];
 
-        const [get_latir, [setPaginacao]]: any = await Promise.all([
-            sql.query(finalQuery, valuesComPaginacao),
-            sql.query(finalQueryPaginacao, values),
-        ]);
+        const [get_latir, [setPaginacao]]: any = await Promise.all([sql.query(finalQuery, valuesComPaginacao), sql.query(finalQueryPaginacao, values)]);
 
         return {
             data: {
@@ -142,36 +144,35 @@ const model_latir = class model_latir {
                     total_itens: setPaginacao?.total_itens,
                     total_paginas: setPaginacao?.total_paginas,
                     total_itens_pagina_atual: get_latir?.length,
-                    itens_por_pagina: itensPorPagina
-                }
-            }
-        }
+                    itens_por_pagina: itensPorPagina,
+                },
+            },
+        };
     }
 
-    static async buscar_pelo_id(props: t.Cachorro.Controllers.Latir.BuscarPeloId.Input, c: t.Banco.Context): Promise<t.Cachorro.Controllers.Latir.BuscarPeloId.Output> {
-        const sql = helpers.banco_dados.get_connection_neon(c.env)
+    static async buscar_pelo_id(props: t.Controllers.Latir.BuscarPeloId.Input, c: t.Context): Promise<t.Controllers.Latir.BuscarPeloId.Output> {
+        const sql = helpers.conn_neon.get_connection(c.env);
         const result: any = await sql
             SELECT 
                 l.*
             FROM 
                 latir l
-            WHERE l._id = ${props.data.id}
+            WHERE l.id = ${props.data.id}
             AND l.excluido IS FALSE
         ;
 
         return {
             data: {
-                latir: result[0]
-            }
-        }
+                latir: result[0],
+            },
+        };
     }
 
-    static async atualizar_pelo_id(data: t.Cachorro.Controllers.Latir.AtualizarPeloId.Input, c: t.Banco.Context): Promise<t.Cachorro.Controllers.Latir.AtualizarPeloId.Output> {
-
+    static async atualizar_pelo_id(data: t.Controllers.Latir.AtualizarPeloId.Input, c: t.Context): Promise<t.Controllers.Latir.AtualizarPeloId.Output> {
         try {
-            const sql = helpers.banco_dados.get_connection_neon(c.env)
-            const updates = [];
-            const values = [];
+            const sql = helpers.conn_neon.get_connection(c.env);
+            const updates: string[] = [];
+            const values: any[] = [];
 
             const fields = data.data.latir;
 
@@ -222,41 +223,40 @@ const model_latir = class model_latir {
             await sql.query(
                 
                 UPDATE latir SET ${setClause} 
-                WHERE _id = $${values.length + 1}
+                WHERE id = $${values.length + 1}
                 RETURNING *;
             ,
                 [...values, data.data.latir.id]
             );
 
-            return await model_latir.buscar_pelo_id({ data: { id: data.data.latir.id } }, c)
+            return await model_latir.buscar_pelo_id({data: {id: data.data.latir.id}}, c);
         } catch (error) {
-            helpers.set_response.error.DATABASE_ERROR({ message: "Erro ao atualizar campos no model latir!" })
+            return helpers.set_response.error.DATABASE_ERROR({message: "Erro ao atualizar campos no model latir!"}) as any;
         }
-
     }
 
-    static async deletar_pelo_id(id: number, c: t.Banco.Context): Promise<t.Cachorro.Controllers.Latir.DeletarPeloId.Output> {
-        const sql = helpers.banco_dados.get_connection_neon(c.env)
+    static async deletar_pelo_id(id: number, c: t.Context): Promise<t.Controllers.Latir.DeletarPeloId.Output> {
+        const sql = helpers.conn_neon.get_connection(c.env);
 
         const result = await sql
             UPDATE latir 
             SET 
                 excluido = TRUE,
                 data_exclusao = NOW()
-            WHERE _id = ${id}
+            WHERE id = ${id}
             AND excluido = FALSE
             RETURNING *
         ;
 
         return {
             data: {
-                latir: result[0]
-            }
-        }
+                latir: result[0],
+            },
+        };
     }
 
-    static async CREATE_TABLE_IF_NOT_EXISTS(c: t.Banco.Context) {
-        const sql = helpers.banco_dados.get_connection_neon(c.env)
+    static async CREATE_TABLE_IF_NOT_EXISTS(c: t.Context) {
+        const sql = helpers.conn_neon.get_connection(c.env);
 
         await sqlCREATE EXTENSION IF NOT EXISTS "uuid-ossp";;
 
@@ -273,6 +273,7 @@ const model_latir = class model_latir {
                 data_exclusao TIMESTAMP WITH TIME ZONE,
                 aplicativo TEXT NOT NULL,
                 -- fim colunas padrões
+                id SERIAL PRIMARY KEY,
                 descricao TEXT NOT NULL,
                 tipo TEXT NOT NULL,
                 valor NUMERIC NOT NULL,
@@ -282,7 +283,7 @@ const model_latir = class model_latir {
                 raca TEXT NOT NULL,
                 idade TEXT NOT NULL
             )
-        
+        ;
     }
 };
 
