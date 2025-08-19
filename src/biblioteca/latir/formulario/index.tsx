@@ -1,284 +1,180 @@
-javascript
-"use client";
-
+typescript
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
-import t from "onda-types";
-import controller_latir from "../../../controllers/controller_latir";
+import t from "../../../types";
+import utils from "onda-utils";
 
-const schema = t.Cachorro.Controllers.Latir.Criar.InputSchema;
-type FormData = t.Cachorro.Controllers.Latir.Criar.Input;
+type FormData = t.Controllers.Latir.Criar.Input;
 
-export default function FormCriarLatir() {
-  const [isPending, startTransition] = useTransition();
+const store_latir = new utils.controller<t.Controllers.Latir.TController>({
+    entidade: "latir",
+    servidor: "worker_latir",
+});
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      data: {
-        descricao: "",
-        tipo: "",
-        valor: 0,
-        data: "",
-        categoria: "",
-        usuario_id: 0,
-        raca: "",
-        idade: "",
-      },
-    },
-  });
-
-  const onSubmit = (data: FormData) => {
-    startTransition(async () => {
-      try {
-        await controller_latir.api.criar(data);
-        reset();
-      } catch (error) {
-        console.error("Erro ao salvar latir:", error);
-      }
-    });
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-
-        {/* Form Container */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8 space-y-6">
-
-          {/* Descrição */}
-          <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Descrição
-            </label>
-            <Controller
-              name="data.descricao"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="text"
-                  {...field}
-                  placeholder="Descrição do latir"
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
-                    errors.data?.descricao 
-                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
-                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  }}
-                />
-              )}
-            />
-            {errors.data?.descricao && (
-              <p className="text-red-500 text-sm">{errors.data.descricao.message}</p>
-            )}
-          </div>
-
-          {/* Tipo */}
-          <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Tipo
-            </label>
-            <Controller
-              name="data.tipo"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="text"
-                  {...field}
-                  placeholder="Tipo do latir"
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
-                    errors.data?.tipo 
-                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
-                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  }}
-                />
-              )}
-            />
-            {errors.data?.tipo && (
-              <p className="text-red-500 text-sm">{errors.data.tipo.message}</p>
-            )}
-          </div>
-
-          {/* Valor */}
-          <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Valor
-            </label>
-            <Controller
-              name="data.valor"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="number"
-                  {...field}
-                  placeholder="Valor do latir"
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
-                    errors.data?.valor 
-                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
-                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  }}
-                />
-              )}
-            />
-            {errors.data?.valor && (
-              <p className="text-red-500 text-sm">{errors.data.valor.message}</p>
-            )}
-          </div>
-
-          {/* Data */}
-          <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Data
-            </label>
-            <Controller
-              name="data.data"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="text"
-                  {...field}
-                  placeholder="Data do latir"
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
-                    errors.data?.data 
-                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
-                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  }}
-                />
-              )}
-            />
-            {errors.data?.data && (
-              <p className="text-red-500 text-sm">{errors.data.data.message}</p>
-            )}
-          </div>
-
-          {/* Categoria */}
-          <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Categoria
-            </label>
-            <Controller
-              name="data.categoria"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="text"
-                  {...field}
-                  placeholder="Categoria do latir"
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
-                    errors.data?.categoria 
-                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
-                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  }}
-                />
-              )}
-            />
-            {errors.data?.categoria && (
-              <p className="text-red-500 text-sm">{errors.data.categoria.message}</p>
-            )}
-          </div>
-
-          {/* Usuario ID */}
-          <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Usuario ID
-            </label>
-            <Controller
-              name="data.usuario_id"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="number"
-                  {...field}
-                  placeholder="ID do usuário"
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
-                    errors.data?.usuario_id 
-                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
-                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  }}
-                />
-              )}
-            />
-            {errors.data?.usuario_id && (
-              <p className="text-red-500 text-sm">{errors.data.usuario_id.message}</p>
-            )}
-          </div>
-
-          {/* Raça */}
-          <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Raça
-            </label>
-            <Controller
-              name="data.raca"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="text"
-                  {...field}
-                  placeholder="Raça do latir"
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
-                    errors.data?.raca 
-                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
-                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  }}
-                />
-              )}
-            />
-            {errors.data?.raca && (
-              <p className="text-red-500 text-sm">{errors.data.raca.message}</p>
-            )}
-          </div>
-
-          {/* Idade */}
-          <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Idade
-            </label>
-            <Controller
-              name="data.idade"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="text"
-                  {...field}
-                  placeholder="Idade do latir"
-                  className={w-full px-4 py-4 text-gray-800 bg-gray-50 border-2 rounded-2xl focus:outline-none focus:bg-white transition-all duration-200 ${
-                    errors.data?.idade 
-                      ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100" 
-                      : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  }}
-                />
-              )}
-            />
-            {errors.data?.idade && (
-              <p className="text-red-500 text-sm">{errors.data.idade.message}</p>
-            )}
-          </div>
-
-          {/* Botão de Submit */}
-          <button
-            onClick={handleSubmit(onSubmit)}
-            disabled={isPending}
-            className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-4 px-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:cursor-not-allowed"
-          >
-            {isPending ? (
-              <div className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
-                Salvando...
-              </div>
-            ) : (
-              <div className="flex items-center justify-center">
-                🐾 Salvar Latir
-              </div>
-            )}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+interface LatirFormularioProps {
+    atualizar?: t.Controllers.Latir.BuscarPeloId.Output["data"]["latir"];
 }
+
+export const LatirFormulario: React.FC<LatirFormularioProps> = ({ atualizar }) => {
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm<FormData>({
+        resolver: zodResolver(t.Controllers.Latir.Criar.InputSchema as any),
+        mode: "onSubmit",
+        defaultValues: {
+            data: {
+                latir: {
+                    descricao: atualizar?.descricao || "",
+                    tipo: atualizar?.tipo || "",
+                    valor: atualizar?.valor || 0,
+                    data: atualizar?.data || "",
+                    categoria: atualizar?.categoria || "",
+                    usuario_id: atualizar?.usuario_id || 0,
+                    raca: atualizar?.raca || "",
+                    idade: atualizar?.idade || "",
+                },
+            },
+        },
+    });
+
+    async function onSubmit(data: FormData) {
+        if (atualizar) {
+            await store_latir.api.atualizar(data);
+        } else {
+            await store_latir.api.criar(data);
+        }
+        reset();
+    }
+
+    return (
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 bg-white rounded-lg shadow-md">
+            <div>
+                <label className="block mb-2 text-sm font-semibold text-gray-700">Descrição</label>
+                <Controller
+                    name="data.latir.descricao"
+                    control={control}
+                    render={({ field }) => (
+                        <input
+                            {...field}
+                            className={w-full border rounded p-2 ${
+                                errors.data?.latir?.descricao ? "border-red-500" : "border-gray-300"
+                            }}
+                        />
+                    )}
+                />
+                {errors.data?.latir?.descricao && <p className="text-red-500 text-xs italic">{errors.data.latir.descricao.message}</p>}
+            </div>
+
+            <div className="mt-4">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">Tipo</label>
+                <Controller
+                    name="data.latir.tipo"
+                    control={control}
+                    render={({ field }) => (
+                        <input
+                            {...field}
+                            className={w-full border rounded p-2 ${
+                                errors.data?.latir?.tipo ? "border-red-500" : "border-gray-300"
+                            }}
+                        />
+                    )}
+                />
+                {errors.data?.latir?.tipo && <p className="text-red-500 text-xs italic">{errors.data.latir.tipo.message}</p>}
+            </div>
+
+            <div className="mt-4">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">Valor</label>
+                <Controller
+                    name="data.latir.valor"
+                    control={control}
+                    render={({ field }) => (
+                        <input
+                            type="number"
+                            {...field}
+                            className={w-full border rounded p-2 ${
+                                errors.data?.latir?.valor ? "border-red-500" : "border-gray-300"
+                            }}
+                        />
+                    )}
+                />
+                {errors.data?.latir?.valor && <p className="text-red-500 text-xs italic">{errors.data.latir.valor.message}</p>}
+            </div>
+
+            <div className="mt-4">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">Data</label>
+                <Controller
+                    name="data.latir.data"
+                    control={control}
+                    render={({ field }) => (
+                        <input
+                            type="date"
+                            {...field}
+                            className={w-full border rounded p-2 ${
+                                errors.data?.latir?.data ? "border-red-500" : "border-gray-300"
+                            }}
+                        />
+                    )}
+                />
+                {errors.data?.latir?.data && <p className="text-red-500 text-xs italic">{errors.data.latir.data.message}</p>}
+            </div>
+
+            <div className="mt-4">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">Categoria</label>
+                <Controller
+                    name="data.latir.categoria"
+                    control={control}
+                    render={({ field }) => (
+                        <input
+                            {...field}
+                            className={w-full border rounded p-2 ${
+                                errors.data?.latir?.categoria ? "border-red-500" : "border-gray-300"
+                            }}
+                        />
+                    )}
+                />
+                {errors.data?.latir?.categoria && <p className="text-red-500 text-xs italic">{errors.data.latir.categoria.message}</p>}
+            </div>
+
+            <div className="mt-4">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">Raça</label>
+                <Controller
+                    name="data.latir.raca"
+                    control={control}
+                    render={({ field }) => (
+                        <input
+                            {...field}
+                            className={w-full border rounded p-2 ${
+                                errors.data?.latir?.raca ? "border-red-500" : "border-gray-300"
+                            }}
+                        />
+                    )}
+                />
+                {errors.data?.latir?.raca && <p className="text-red-500 text-xs italic">{errors.data.latir.raca.message}</p>}
+            </div>
+
+            <div className="mt-4">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">Idade</label>
+                <Controller
+                    name="data.latir.idade"
+                    control={control}
+                    render={({ field }) => (
+                        <input
+                            {...field}
+                            className={w-full border rounded p-2 ${
+                                errors.data?.latir?.idade ? "border-red-500" : "border-gray-300"
+                            }}
+                        />
+                    )}
+                />
+                {errors.data?.latir?.idade && <p className="text-red-500 text-xs italic">{errors.data.latir.idade.message}</p>}
+            </div>
+
+            <button type="submit" className="mt-6 w-full bg-blue-600 text-white rounded p-2 hover:bg-blue-700">
+                {atualizar ? "Atualizar" : "Criar"}
+            </button>
+        </form>
+    );
+};
