@@ -1,10 +1,6 @@
 typescript
 import z4 from "zod/v4";
 
-// tipagem:
-// COMO USAR ESE NAMESPACE NA HORA DE IMPORTAR: 
-// import t from "onda-types"
-// t.Cachorro.Controllers.Latir.Input
 namespace ControllerLatir {
 
     export const LatirBaseSchema = z4.object({
@@ -22,7 +18,18 @@ namespace ControllerLatir {
 
     export namespace Criar {
         export const InputSchema = z4.object({
-            data: LatirBaseSchema
+            data: z4.object({
+                latir: z4.object({
+                    descricao: z4.string(),
+                    tipo: z4.string(),
+                    valor: z4.number(),
+                    data: z4.string(),
+                    categoria: z4.string(),
+                    usuario_id: z4.number(),
+                    raca: z4.string(),
+                    idade: z4.string(),
+                })
+            })
         });
         export type Input = z4.infer<typeof InputSchema>;
 
@@ -47,8 +54,9 @@ namespace ControllerLatir {
                     categoria: z4.string().optional().nullable(),
                     usuario_id: z4.number().optional().nullable(),
                     raca: z4.string().optional().nullable(),
-                    idade: z4.string().optional().nullable()
+                    idade: z4.string().optional().nullable(),
                 }),
+
             })
         });
 
@@ -112,7 +120,9 @@ namespace ControllerLatir {
 
     export namespace DeletarPeloId {
         export const InputSchema = z4.object({
-            id: z4.number()
+            data: z4.object({
+                id: z4.number()
+            })
         });
         export type Input = z4.infer<typeof InputSchema>;
 
@@ -123,6 +133,29 @@ namespace ControllerLatir {
             }
         }
     }
+
+    export type TController = {
+        Criar: {
+            Input: Criar.Input;
+            Output: Criar.Output;
+        };
+        BuscarPeloFiltro: {
+            Input: BuscarPeloFiltro.Input;
+            Output: BuscarPeloFiltro.Output;
+        };
+        BuscarPeloId: {
+            Input: BuscarPeloId.Input;
+            Output: BuscarPeloId.Output;
+        };
+        AtualizarPeloId: {
+            Input: AtualizarPeloId.Input;
+            Output: AtualizarPeloId.Output;
+        };
+        DeletarPeloId: {
+            Input: DeletarPeloId.Input;
+            Output: DeletarPeloId.Output;
+        };
+    };
 }
 
 export default ControllerLatir;
